@@ -1,0 +1,20 @@
+---
+extends: default
+
+rules:
+  line-length: disable
+  braces: disable
+  brackets: # dont care about [a,b,c] vs [ a, b, c ]
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  comments: disable
+  comments-indentation: disable
+  document-start: disable
+  new-line-at-end-of-file: enable
+  new-lines:
+    type: unix
+  trailing-spaces: enable
+  indentation: # lists start with hyphen on the same indentation level as parent
+    spaces: 2
+    indent-sequences: false
+    check-multi-line-strings: false
