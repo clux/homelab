@@ -1,0 +1,53 @@
+# global
+flux2:
+  installCRDs: true
+  logLevel: info
+
+  helmController:
+    create: false
+  imageAutomationController:
+    create: false
+  imageReflectionController:
+    create: false
+  kustomizeController:
+    create: true
+    annotations: ~
+    resources:
+      limits: {}
+      requests:
+        cpu: 100m
+        memory: 64Mi
+    container:
+      additionalArgs:
+      - "--concurrent=4"
+  notificationController:
+    create: false
+    # rely on an alert instead
+  sourceController:
+    create: true
+    annotations: ~
+    resources:
+      limits: {}
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  prometheus:
+    # have kind of migrated off podmonitors to custom KSM metrics
+    # since gotk_ metrics are deprecated
+    # they are created in kube-state-metrics in promstack now.
+    # https://fluxcd.io/flux/monitoring/metrics/
+    # https://fluxcd.io/flux/monitoring/custom-metrics/
+    # but there's still lots of metrics there that's not deprecated?
+    # ..still investigating what is useful and stripping stuff
+    useKsm: true
+    podMonitor: # forked in templates for relabelings
+      create: false
+
+  # security
+  policies:
+    create: true
+  rbac:
+    create: true
+    createAggregation: false
+  watchAllNamespaces: false
