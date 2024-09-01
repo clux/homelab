@@ -1,0 +1,30 @@
+{{- if .Values.overrides.traefik.monitor }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: traefik
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  podMetricsEndpoints:
+  - port: metrics
+    relabelings:
+    - action: keep
+      regex: Running
+      sourceLabels:
+      - __meta_kubernetes_pod_phase
+    metricRelabelings:
+    - action: drop
+      regex: '^go_.*'
+      sourceLabels: [__name__]
+    # drop more expensive bucket
+    - action: drop
+      regex: 'traefik_service_request_duration_seconds_bucket|traefik_entrypoint_request_duration_seconds_bucket'
+      sourceLabels: [__name__]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+{{- end }}
