@@ -2,12 +2,12 @@ apiVersion: v2
 name: promstack
 description: wrapper over kube-prometheus-stack and tooling
 type: application
-version: 0.5.0
+version: 0.6.0
 dependencies:
 - name: kube-prometheus-stack
-  version: "59.*"
+  version: "*"
   repository: https://prometheus-community.github.io/helm-charts
 - name: tempo
-  version: "1.*"
+  version: "*"
   repository: https://grafana.github.io/helm-charts
   condition: tempo.enabled

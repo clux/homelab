@@ -6,44 +6,41 @@ overrides:
     config: false
 
 kube-prometheus-stack:
-  # not yet safe to bundle these in with install (kubectl has no ordering)
-  # mabye applyset.k8s.io/role/parent can be set in the future
-  # https://github.com/kubernetes/enhancements/tree/master/keps/sig-cli/3659-kubectl-apply-prune#parent-object-management
-  # but it's not exposed by kps https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/charts/crds/crds
-  crds:
-    enabled: false # install manually with just apply-crds
-
   nameOverride: promstack
 
   ## Create default rules for monitoring the cluster
   defaultRules:
     create: true
     rules:
-      alertmanager: false # trying grafana alerting
+      alertmanager: false # unlikely errors in 1 replica setup
       etcd: false
-      general: false # no watchdog/scrape failure
+      general: false # no watchdog/scrape failure IDEALLY SET THIS UP
       k8s: true
       k8sContainerMemorySwap: false # dropped container_memory_swap
+      k8sContainerMemoryCache: true # used in node compute dashboard
+      k8sPodOwner: true # used in good dashboards
       kubeApiserver: false
       kubeApiserverAvailability: false
       kubeApiserverError: false
       kubeApiserverSlos: false
-      kubelet: false
+      kubeControllerManager: false
+      kubelet: false # dumb pleg rules
       kubePrometheusGeneral: false # not using up1 / up0 anyway
       kubePrometheusNodeRecording: false # for node overview dashboards
       kubernetesApps: true
       kubernetesResources: false # don't care about quotas atm
-      kubernetesStorage: false # pvc warnings are good, but local provisioner do not support them yet
+      kubernetesStorage: false # pvc warnings are good, but local-provisioner do not support them yet
       kubernetesSystem: false
       kubeScheduler: false
+      kubeSchedulerAlerting: false
       kubeStateMetrics: true
       network: false # don't care bout network flaps atm
-      node: false # don't care about node utilization atm
+      node: false # don't need these to visualise them - default boards are bad
       nodeExporterAlerting: false
       nodeExporterRecording: false
-      prometheus: true
-      prometheusOperator: true
-      time: true
+      prometheus: true # nice safety
+      prometheusOperator: true # nice safety when not using admission webhook
+      windows: false # wat
     disabled:
       # some of the heavier prom alerts that we don't need
       PrometheusNotIngestingSamples: true
@@ -83,7 +80,7 @@ kube-prometheus-stack:
       enabled: true
       metricRelabelings:
       - sourceLabels: [__name__]
-        regex: '(grafana_http_|grafana_live_|grafana_frontend_|grafana_access|grafana_alerting|grafana_plugin|grafana_feature_toggles).*'
+        regex: '(grafana_http_|grafana_live_|grafana_frontend_|grafana_access|grafana_alerting|grafan_folder|grafana_plugin|grafana_feature_toggles).*'
         action: drop
       - sourceLabels: [__name__]
         regex: 'grafana.*_bucket'
