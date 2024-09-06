@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux
+  namespace: flux
+spec:
+  interval: 60m # just ping when changing
+  path: ./deploy/flux
+  timeout: 2m
+  prune: true
+  targetNamespace: flux
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: source-controller
+    namespace: flux
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: kustomize-controller
+    namespace: flux
+  sourceRef:
+    kind: GitRepository
+    name: homelab

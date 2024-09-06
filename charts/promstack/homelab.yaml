@@ -1,0 +1,51 @@
+---
+# File with overrides because these are things that I like to opt-out of locally.
+# full setup runs slightly heavier; with alertmanager, ingresses, node exporter, with flux
+overrides:
+  traefik:
+    monitor: true
+  alertmanager:
+    config: true
+
+kube-prometheus-stack:
+  # not yet safe to bundle these in with install (kubectl has no ordering)
+  # mabye applyset.k8s.io/role/parent can be set in the future
+  # https://github.com/kubernetes/enhancements/tree/master/keps/sig-cli/3659-kubectl-apply-prune#parent-object-management
+  # but it's not exposed by kps https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/charts/crds/crds
+  crds:
+    enabled: false # install manually with just apply-crds
+
+  kube-state-metrics:
+    customResourceState:
+      enabled: true
+
+  nodeExporter:
+    enabled: true
+
+  alertmanager:
+    enabled: true
+    ingress:
+      enabled: true
+      pathType: Prefix
+      hosts:
+      - alertmanager.clux.dev
+    alertmanagerSpec:
+      externalUrl: http://alertmanager.clux.dev
+
+  grafana:
+    ingress:
+      enabled: true
+      hosts:
+      - grafana.clux.dev
+    grafana.ini:
+      server:
+        domain: grafana.clux.dev
+
+  prometheus:
+    ingress:
+      enabled: true
+      pathType: Prefix
+      hosts:
+      - prometheus.clux.dev
+    prometheusSpec:
+      externalUrl: http://prometheus.clux.dev

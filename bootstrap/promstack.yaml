@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: promstack
+  namespace: flux
+spec:
+  interval: 60m # just ping when changing
+  path: ./deploy/promstack
+  timeout: 2m
+  prune: true
+  targetNamespace: monitoring
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: promstack-operator
+    namespace: monitoring
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: promstack-grafana
+    namespace: monitoring
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: prometheus-promstack
+    namespace: monitoring
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: alertmanager-promstack
+    namespace: monitoring
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: promstack-tempo
+    namespace: monitoring
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: promstack-kube-state-metrics
+    namespace: monitoring
+  sourceRef:
+    kind: GitRepository
+    name: homelab

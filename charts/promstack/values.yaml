@@ -114,6 +114,7 @@ kube-prometheus-stack:
         - name: Prometheus
           uid: Prometheus
           type: prometheus
+          defaultDatasourceScrapeInterval: 60s
           url: http://promstack-prometheus:9090/
           httpMethod: POST
           isDefault: true
@@ -133,9 +134,6 @@ kube-prometheus-stack:
         enabled: true
         resource: configmap
         searchNamespace: monitoring
-        # allow specifying dashboard folders via this annotation
-        # NB: annotation values must start with /tmp/dashboards/
-        folderAnnotation: grafana_folder
         provider:
           name: sidecarProvider
           allowUiUpdates: false
@@ -430,7 +428,7 @@ kube-prometheus-stack:
                 storage: 5Gi
       # don't need data super often
       scrapeInterval: 60s
-      #scrapeInterval: 15s
+      evaluationInterval: 60s
       replicas: 1
       # no operator enrichment
       prometheusExternalLabelNameClear: true

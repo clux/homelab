@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dashboards
+  namespace: flux
+spec:
+  interval: 60m # just ping when changing
+  path: ./deploy/dashboards
+  timeout: 2m
+  prune: true
+  targetNamespace: monitoring
+  healthChecks: []
+  sourceRef:
+    kind: GitRepository
+    name: homelab
