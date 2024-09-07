@@ -5,6 +5,7 @@ overrides:
   traefik:
     monitor: true
   alertmanager:
+    # NB: Requires the discord secret
     config: true
 
 kube-prometheus-stack:
