@@ -5,7 +5,7 @@ Raw grafana "Copy JSON to clipboard" snapshots that is used to generate `ConfigM
 The generation setup is defined in [mkdashboard.sh](../mkdashboard.sh) and is run for every file in this directory.
 
 > [!WARNING]
-> We edit these files directly, because editing on grafana is the only sensible approach with grafanas giant configuration language.
+> We export these from a live grafana tied to the promstack version of grafana.
 
 ## Dashboard Chart
 

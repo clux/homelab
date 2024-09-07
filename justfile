@@ -28,7 +28,7 @@ update chart:
   git add deploy/{{chart}}
 
 # -----------------------------------------------------------------------------
-# generators
+# generators - generated folders are watched by flux
 
 [group('gen'), doc('generate everything from sources')]
 gen: gen-promstack gen-crds gen-dashboards gen-flux

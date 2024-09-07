@@ -15,3 +15,8 @@ helm repo add clux https://clux.github.io/homelab
 ```
 
 then `helm search repo clux` to see the charts.
+
+## Charts
+
+- [promstack](https://github.com/clux/homelab/tree/main/charts/promstack) :: A low-footprint prometheus/observability chart
+- [CX Dashboards](https://github.com/clux/homelab/tree/main/charts/dashboards) :: A set of modern dashboards for small clusters with prometheus backlinks
