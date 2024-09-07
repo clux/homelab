@@ -1,6 +1,6 @@
 ---
 # File with overrides because these are things that I like to opt-out of locally.
-# full setup runs slightly heavier; with alertmanager, ingresses, node exporter, with flux
+# full homelab setup configures alertmanager, ingresses, node exporter, with flux
 overrides:
   traefik:
     monitor: true

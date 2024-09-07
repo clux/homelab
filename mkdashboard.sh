@@ -9,9 +9,8 @@ fail() {
 # ./mkdashboard.sh file.json
 main() {
   local RESULT
-  command -v sd > /dev/null || fail "sd must be installed"
   command -v jq > /dev/null || fail "jq must be installed"
-  command -v sed > /dev/null || fail "sed must be installed" # TODO: mac sed?
+  command -v sed > /dev/null || fail "sed must be installed" # hopefully mac sed can do basics..
 
   # Read from dashboard json files
   [ -f "$1" ] || fail "a file must be given"
