@@ -1,0 +1,16 @@
+
+urls:
+  prometheus: http://prometheus.clux.dev
+  alertmanager: http://alertmanager.clux.dev
+
+dashboards:
+  home:
+    enabled: true
+  nodeMachine:
+    enabled: true
+  prometheus:
+    enabled: true
+  alertmanager:
+    enabled: true
+  flux:
+    enabled: true

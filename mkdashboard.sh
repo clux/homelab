@@ -15,6 +15,7 @@ main() {
   # Read from dashboard json files
   [ -f "$1" ] || fail "a file must be given"
   RESULT="$(cat "$1")"
+  OUTPUT="${2:-./deploy/dashboards}"
 
   # For consistency ensure dashboard datasources always say just "Prometheus"
   # shellcheck disable=SC2001
@@ -38,7 +39,7 @@ main() {
     DBCONTENT="  \"${DBNAME}.json\": |-"
     DBCONTENT="${DBCONTENT}"$'\n'"${DBCONTENT_YAML}"
   fi
-  cat << EOF > "./deploy/dashboards/${DBNAME}.yaml"
+  cat << EOF > "${OUTPUT}/${DBNAME}.yaml"
 ---
 apiVersion: v1
 kind: ConfigMap
