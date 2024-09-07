@@ -1,0 +1,53 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/charts/prometheus-node-exporter/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: promstack-node-exporter
+  namespace: monitoring
+  labels:
+    helm.sh/chart: prometheus-node-exporter-4.39.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "1.8.2"
+    release: promstack
+spec:
+  jobLabel: jobLabel
+  
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-exporter
+      app.kubernetes.io/instance: promstack
+  attachMetadata:
+    node: false
+  endpoints:
+    - port: http-metrics
+      scheme: http
+      metricRelabelings:
+        - action: drop
+          regex: ^go_.*
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: ^node_cpu_guest_seconds_total
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: ^node_network_(flags|device_id|dormant|iface_link_mode|transmit_queue_length|carrier.*)
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: ^node_scrape_(collector_duration_seconds)
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: ^node_filesystem_(readonly|device_error|files).*
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: ^node_(cooling|schedstat|cpu_scaling).*
+          sourceLabels:
+          - __name__

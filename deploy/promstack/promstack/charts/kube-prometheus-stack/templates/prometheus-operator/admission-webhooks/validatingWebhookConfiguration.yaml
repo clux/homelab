@@ -1,0 +1,41 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/templates/prometheus-operator/admission-webhooks/validatingWebhookConfiguration.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name:  promstack-admission
+  annotations:
+    
+  labels:
+    app: promstack-admission
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/part-of: promstack
+    chart: kube-prometheus-stack-62.3.1
+    release: "promstack"
+    heritage: "Helm"
+    app.kubernetes.io/name: promstack-prometheus-operator
+    app.kubernetes.io/component: prometheus-operator-webhook
+webhooks:
+  - name: prometheusrulemutate.monitoring.coreos.com
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+          - monitoring.coreos.com
+        apiVersions:
+          - "*"
+        resources:
+          - prometheusrules
+        operations:
+          - CREATE
+          - UPDATE
+    clientConfig:
+      service:
+        namespace: monitoring
+        name: promstack-operator
+        path: /admission-prometheusrules/validate
+    timeoutSeconds: 10
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None

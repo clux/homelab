@@ -1,0 +1,27 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/templates/prometheus/rules-1.14/k8s.rules.container_memory_cache.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: promstack-k8s.rules.container-memory-cache
+  namespace: monitoring
+  labels:
+    app: promstack
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/part-of: promstack
+    chart: kube-prometheus-stack-62.3.1
+    release: "promstack"
+    heritage: "Helm"
+spec:
+  groups:
+  - name: k8s.rules.container_memory_cache
+    rules:
+    - expr: |-
+        container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
+        * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (1,
+          max by (cluster, namespace, pod, node) (kube_pod_info{node!=""})
+        )
+      record: node_namespace_pod_container:container_memory_cache

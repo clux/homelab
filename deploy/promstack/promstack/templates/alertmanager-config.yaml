@@ -1,0 +1,30 @@
+---
+# Source: promstack/templates/alertmanager-config.yaml
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alertmanager-config
+spec:
+  inhibitRules: []
+  route:
+    groupBy:
+    - alertname
+    groupInterval: 5m
+    groupWait: 30s
+    repeatInterval: 12h
+    receiver: "null"
+    routes:
+    - matchers:
+      - name: alertname
+        matchType: "="
+        value: "Watchdog"
+      receiver: "null"
+    # all other alerts go to default receiver
+    - receiver: "default"
+  receivers:
+  - name: "null"
+  - name: "default"
+    discordConfigs:
+    - apiURL:
+        name: discord
+        key: address

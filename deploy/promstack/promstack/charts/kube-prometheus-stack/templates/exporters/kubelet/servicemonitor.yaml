@@ -1,0 +1,119 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/templates/exporters/kubelet/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: promstack-kubelet
+  namespace: monitoring
+  labels:
+    app: promstack-kubelet    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/part-of: promstack
+    chart: kube-prometheus-stack-62.3.1
+    release: "promstack"
+    heritage: "Helm"
+spec:
+  
+  attachMetadata:
+    node: false
+  endpoints:
+  - port: https-metrics
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecureSkipVerify: true
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    honorLabels: true
+    honorTimestamps: true
+    metricRelabelings:
+    - action: drop
+      regex: (apiserver_|etcd_|workqueue_|kubernetes_feature_|endpoint_slice_|node_authorizer_|storage_|kubeproxy_|aggregator_|authentication_|scheduler_|apiextensions_|rest_client_).*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: (job_controller_|cronjob_controller_|authorization_|field_validation_).*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: (kubelet_runtime_|kubelet_http_|kubelet_pod_|kube_router|kubelet_evented_|kubelet_topology_|kubelet_pleg_|kubelet_node_startup_).*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: ^go_.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: .*bucket.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: (watch_cache_capacity|volume_operation_).*
+      sourceLabels:
+      - __name__
+    relabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+  - port: https-metrics
+    scheme: https
+    path: /metrics/cadvisor
+    honorLabels: true
+    honorTimestamps: true
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecureSkipVerify: true
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    metricRelabelings:
+    - action: drop
+      regex: scheduler_.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: apiserver_.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_memory_(mapped_file|swap)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_(file_descriptors|tasks_state|threads_max)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_spec.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: .+;
+      sourceLabels:
+      - id
+      - pod
+    - action: drop
+      regex: container_(memory_failures|last_seen|memory_kernel|memory_failcnt|blkio_device|oom_events|start_time|threads|ulimits_soft).*
+      sourceLabels:
+      - __name__
+    relabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+  jobLabel: k8s-app
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet

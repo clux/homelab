@@ -1,0 +1,38 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/charts/kube-state-metrics/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: promstack-kube-state-metrics
+  namespace: monitoring
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.25.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "2.13.0"
+    release: promstack
+spec:
+  jobLabel: app.kubernetes.io/name  
+  selector:
+    matchLabels:      
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/instance: promstack
+  endpoints:
+    - port: http
+      honorLabels: true
+      metricRelabelings:
+        - action: drop
+          regex: kube_pod_status_reason
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: kube_pod_tolerations|kube_pod_status_qos_class|kube_pod_scheduler|kube_pod_service_account|kube_pod_status_scheduled_time
+          sourceLabels:
+          - __name__
+        - action: drop
+          regex: kube_replicaset_(status|spec|metadata|created).*
+          sourceLabels:
+          - __name__

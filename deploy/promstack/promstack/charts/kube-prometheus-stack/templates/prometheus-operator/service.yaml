@@ -1,0 +1,28 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/templates/prometheus-operator/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: promstack-operator
+  namespace: monitoring
+  labels:
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/part-of: promstack
+    chart: kube-prometheus-stack-62.3.1
+    release: "promstack"
+    heritage: "Helm"
+    app: promstack-operator
+    app.kubernetes.io/name: promstack-prometheus-operator
+    app.kubernetes.io/component: prometheus-operator
+spec:
+  ports:
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app: promstack-operator
+    release: "promstack"
+  type: "ClusterIP"

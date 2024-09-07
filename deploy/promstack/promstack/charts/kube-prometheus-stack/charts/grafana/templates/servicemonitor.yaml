@@ -1,0 +1,41 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/charts/grafana/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: promstack-grafana
+  namespace: monitoring
+  labels:
+    helm.sh/chart: grafana-8.4.9
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "11.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  endpoints:
+  - port: http-web
+    scrapeTimeout: 30s
+    honorLabels: true
+    path: /metrics
+    scheme: http
+    metricRelabelings:
+      - action: drop
+        regex: (grafana_http_|grafana_live_|grafana_frontend_|grafana_access|grafana_alerting|grafan_folder|grafana_plugin|grafana_feature_toggles).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: grafana.*_bucket
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: ^go_.*
+        sourceLabels:
+        - __name__
+  jobLabel: "promstack"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/instance: promstack
+  namespaceSelector:
+    matchNames:
+      - monitoring

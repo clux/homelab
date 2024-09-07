@@ -1,0 +1,74 @@
+---
+# Source: promstack/charts/kube-prometheus-stack/templates/prometheus/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: promstack-prometheus
+  namespace: monitoring
+  labels:
+    app: promstack-prometheus
+    
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: promstack
+    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/part-of: promstack
+    chart: kube-prometheus-stack-62.3.1
+    release: "promstack"
+    heritage: "Helm"
+spec:
+  
+  selector:
+    matchLabels:
+      app: promstack-prometheus
+      release: "promstack"
+      self-monitor: "true"
+  namespaceSelector:
+    matchNames:
+      - "monitoring"
+  endpoints:
+  - port: http-web
+    path: "/metrics"
+    metricRelabelings:
+      - action: drop
+        regex: prometheus_http_(request|response).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: prometheus_tsdb_(compaction_chunk|compaction_duration).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: (net_conntrack).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: prometheus_sd_(consul|azure|kuma|nomad|linode).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: ^go_.*
+        sourceLabels:
+        - __name__
+  - port: reloader-web
+    path: "/metrics"
+    metricRelabelings:
+      - action: drop
+        regex: prometheus_http_(request|response).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: prometheus_tsdb_(compaction_chunk|compaction_duration).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: (net_conntrack).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: prometheus_sd_(consul|azure|kuma|nomad|linode).*
+        sourceLabels:
+        - __name__
+      - action: drop
+        regex: ^go_.*
+        sourceLabels:
+        - __name__
