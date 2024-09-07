@@ -3,11 +3,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: monitoring
-  name: grafana-dashboard-cxfluxcd
+  name: grafana-dashboard-cxflux
   labels:
     grafana_dashboard: "1"
 data:
-  "cxfluxcd.json": |-
+  "cxflux.json": |-
     {
       "annotations": {
         "list": [
@@ -2123,7 +2123,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "CX / FluxCD",
+      "title": "CX / Flux",
       "uid": "cx-flux",
       "version": 2,
       "weekStart": ""
