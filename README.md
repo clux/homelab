@@ -15,4 +15,3 @@ helm repo add clux https://clux.github.io/homelab
 ```
 
 then `helm search repo clux` to see the charts.
-
