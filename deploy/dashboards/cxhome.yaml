@@ -53,7 +53,7 @@ data:
           "title": "DB: Machine",
           "tooltip": "",
           "type": "link",
-          "url": "/d/cx-node-machine"
+          "url": "/d/cx-machine"
         },
         {
           "asDropdown": false,
