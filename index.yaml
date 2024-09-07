@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   dashboards:
   - apiVersion: v2
+    created: "2024-09-07T19:12:32.680152428Z"
+    description: cx dashboard configmaps
+    digest: 3781a21ebbd41aae3460ba86efeea9a9ea9e3b2e1f3d8092f599dc5eecf7b286
+    name: dashboards
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/dashboards-0.1.2/dashboards-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     created: "2024-09-07T14:10:22.535345164Z"
     description: cx dashboard configmaps
     digest: 9f28316a63fa9d5be1aa4cd7a88663f0486147e247d7ad251c846033656c81e8
@@ -26,6 +35,23 @@ entries:
     - https://github.com/clux/homelab/releases/download/flux-0.1.1/flux-0.1.1.tgz
     version: 0.1.1
   promstack:
+  - apiVersion: v2
+    created: "2024-09-07T19:12:32.887317167Z"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: '*'
+    - condition: tempo.enabled
+      name: tempo
+      repository: https://grafana.github.io/helm-charts
+      version: '*'
+    description: wrapper over kube-prometheus-stack and tooling
+    digest: c344ffed3f984bb405c49ed187da7adb1d47cb2bb40fd5eeacece0e2d60460ee
+    name: promstack
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/promstack-0.6.1/promstack-0.6.1.tgz
+    version: 0.6.1
   - apiVersion: v2
     created: "2024-09-05T21:09:09.226837475Z"
     dependencies:
@@ -60,4 +86,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/promstack-0.5.0/promstack-0.5.0.tgz
     version: 0.5.0
-generated: "2024-09-07T14:10:22.535358068Z"
+generated: "2024-09-07T19:12:32.887331163Z"
