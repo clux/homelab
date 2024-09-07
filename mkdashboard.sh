@@ -13,19 +13,9 @@ main() {
   command -v jq > /dev/null || fail "jq must be installed"
   command -v sed > /dev/null || fail "sed must be installed" # TODO: mac sed?
 
-  # Read from file if given
-  if [ -f "$1" ]; then
-    RESULT="$(cat "$1")"
-  else
-    # clipboard assumed
-    if command -v xclip; then
-      RESULT="$(xclip -o)"
-    elif command -v wl-paste; then
-      RESULT="$(wl-paste -o)"
-    else
-      RESULT="$(pbpaste)"
-    fi
-  fi
+  # Read from dashboard json files
+  [ -f "$1" ] || fail "a file must be given"
+  RESULT="$(cat "$1")"
 
   # For consistency ensure dashboard datasources always say just "Prometheus"
   # shellcheck disable=SC2001
