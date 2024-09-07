@@ -1,13 +1,15 @@
+{{- if .Values.dashboards.machine.enabled }}
+# GENERATED DO NOT EDIT
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: monitoring
-  name: grafana-dashboard-cxmachineoverview
+  name: grafana-dashboard-cxmachine
   labels:
     grafana_dashboard: "1"
 data:
-  "cxmachineoverview.json": |-
+  "cxmachine.json": |-
     {
       "annotations": {
         "list": [
@@ -1728,8 +1730,11 @@ data:
         ]
       },
       "timezone": "utc",
-      "title": "CX / Machine Overview",
-      "uid": "cx-node-machine",
+      "title": "CX / Machine",
+      "uid": "cx-machine",
       "version": 1,
       "weekStart": ""
     }
+
+
+{{- end }}

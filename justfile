@@ -121,7 +121,7 @@ init-flux:
 release-dashboard-chart:
   #!/usr/bin/env bash
   rm -f charts/dashboards/templates/*.yaml
-  declare -a released=("home" "prometheus" "alertmanager" "flux" "node-machine")
+  declare -a released=("home" "prometheus" "alertmanager" "flux" "machine")
   for board in "${released[@]}"; do
     ./mkdashboard.sh dashboards/${board}.json charts/dashboards/templates
   done
@@ -129,6 +129,11 @@ release-dashboard-chart:
   sd '\{\{(\s*\w*\s*)\}\}' '{{{{`{{{{`}} $1 {{{{`}}`}}' charts/dashboards/templates/*.yaml
   # make our static clux.dev url a helm configurable value
   sd 'http://(\w+).clux.dev' '{{{{ .Values.urls.$1 }}' charts/dashboards/templates/*.yaml
+  for board in "${released[@]}"; do
+    # Add do not modify and enabled headers/footer
+    sd -f=s '(.*)' '{{{{- if .Values.dashboards.THEACTUALBOARD.enabled }}\n# GENERATED DO NOT EDIT\n$1\n\n{{{{- end }}\n' charts/dashboards/templates/cx${board}.yaml
+    sd 'THEACTUALBOARD' "$board" charts/dashboards/templates/cx${board}.yaml
+  done
   # ensure it can be generated
   rm -rf deploy/dashtest/
   helm template dashboards ./charts/dashboards -n default --output-dir deploy/dashtest --debug

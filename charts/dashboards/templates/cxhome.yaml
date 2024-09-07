@@ -1,3 +1,5 @@
+{{- if .Values.dashboards.home.enabled }}
+# GENERATED DO NOT EDIT
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -53,7 +55,7 @@ data:
           "title": "DB: Machine",
           "tooltip": "",
           "type": "link",
-          "url": "/d/cx-node-machine"
+          "url": "/d/cx-machine"
         },
         {
           "asDropdown": false,
@@ -443,3 +445,6 @@ data:
       "version": 1,
       "weekStart": ""
     }
+
+
+{{- end }}

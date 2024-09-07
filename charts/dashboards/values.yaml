@@ -6,7 +6,7 @@ urls:
 dashboards:
   home:
     enabled: true
-  nodeMachine:
+  machine:
     enabled: true
   prometheus:
     enabled: true
