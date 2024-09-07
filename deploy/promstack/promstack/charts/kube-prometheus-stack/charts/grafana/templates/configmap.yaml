@@ -19,7 +19,7 @@ data:
     [analytics]
     check_for_updates = false
     [dashboards]
-    default_home_dashboard_path = /tmp/dashboards/cx-home.json
+    default_home_dashboard_path = /tmp/dashboards/cxhome.json
     [grafana_net]
     url = https://grafana.net
     [log]

@@ -52,18 +52,6 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "DB: Traefik",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/cx-traefik"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
       "title": "DB: Prom",
       "tooltip": "",
       "type": "link",
@@ -249,7 +237,7 @@
           }
         ]
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.1.5",
       "targets": [
         {
           "datasource": {

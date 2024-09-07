@@ -1361,7 +1361,7 @@ data:
               "refId": "B"
             }
           ],
-          "title": "Prometheus Stats",
+          "title": "Cardinality Breakdown",
           "transformations": [
             {
               "id": "concatenate",
@@ -1673,6 +1673,13 @@ data:
                   "mode": "off"
                 }
               },
+              "links": [
+                {
+                  "targetBlank": true,
+                  "title": "Show Rules Page for ${__field.labels.rule}",
+                  "url": "{{ .Values.urls.prometheus }}/rules#${__field.labels.rule}"
+                }
+              ],
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
@@ -2657,8 +2664,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2756,8 +2762,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2869,8 +2874,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       }
                     ]
                   },
@@ -3012,8 +3016,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3129,8 +3132,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "dark-red",
@@ -3236,8 +3238,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "dark-red",
-                        "value": null
+                        "color": "dark-red"
                       },
                       {
                         "color": "#EAB839",
@@ -3360,8 +3361,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       }
                     ]
                   },
@@ -3472,8 +3472,7 @@ data:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "dark-red",
-                        "value": null
+                        "color": "dark-red"
                       },
                       {
                         "color": "#EAB839",
