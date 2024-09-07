@@ -1,4 +1,4 @@
-# Personal Kubernetes Homelab Automation and Helm Charts
+# Kubernetes Homelab Automation and Helm Charts
 
 [![Release Charts](https://github.com/clux/homelab/actions/workflows/release.yml/badge.svg)](https://github.com/clux/homelab/actions/workflows/release.yml)
 [![Releases downloads](https://img.shields.io/github/downloads/clux/homelab/total.svg)](https://github.com/clux/homelab/releases)
@@ -6,7 +6,7 @@
 
 Minimal helm chart wrappers for minimal home lab setups.
 
-## Usage
+## Chart Usage
 
 Add the [helm](https://helm.sh) repo:
 
