@@ -9,7 +9,7 @@ The generation setup is defined in [mkdashboard.sh](../mkdashboard.sh) and is ru
 
 ## Dashboard Chart
 
-These files also generate the [dashboard chart](https://github.com/clux/homelab/tree/main/charts/dashboards) separately.
+These files also generate the [cx-dashboard chart](https://github.com/clux/homelab/tree/main/charts/cx-dashboards) separately.
 
 See the last recipe in the [justfile](https://github.com/clux/homelab/blob/main/justfile).
 

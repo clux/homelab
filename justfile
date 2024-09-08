@@ -117,23 +117,23 @@ init-flux:
 # -----------------------------------------------------------------------------
 # hacks to actually release dashboards - not really necessary for myself
 
-[group('release'), doc('generate dashboard chart from grafana json in dashboard folder')]
+[group('release'), doc('generate cx-dashboard chart from grafana json in dashboard folder')]
 release-dashboard-chart:
   #!/usr/bin/env bash
-  rm -f charts/dashboards/templates/*.yaml
+  rm -f charts/cx-dashboards/templates/*.yaml
   declare -a released=("home" "prometheus" "alertmanager" "flux" "machine")
   for board in "${released[@]}"; do
-    ./mkdashboard.sh dashboards/${board}.json charts/dashboards/templates
+    ./mkdashboard.sh dashboards/${board}.json charts/cx-dashboards/templates
   done
   # escape grafana double braces used in legends to prevent them being seen by helm
-  sd '\{\{(\s*\w*\s*)\}\}' '{{{{`{{{{`}} $1 {{{{`}}`}}' charts/dashboards/templates/*.yaml
+  sd '\{\{(\s*\w*\s*)\}\}' '{{{{`{{{{`}} $1 {{{{`}}`}}' charts/cx-dashboards/templates/*.yaml
   # make our static clux.dev url a helm configurable value
-  sd 'http://(\w+).clux.dev' '{{{{ .Values.urls.$1 }}' charts/dashboards/templates/*.yaml
+  sd 'http://(\w+).clux.dev' '{{{{ .Values.urls.$1 }}' charts/cx-dashboards/templates/*.yaml
   for board in "${released[@]}"; do
     # Add do not modify and enabled headers/footer
-    sd -f=s '(.*)' '{{{{- if .Values.dashboards.THEACTUALBOARD.enabled }}\n# GENERATED DO NOT EDIT\n$1\n\n{{{{- end }}\n' charts/dashboards/templates/cx${board}.yaml
-    sd 'THEACTUALBOARD' "$board" charts/dashboards/templates/cx${board}.yaml
+    sd -f=s '(.*)' '{{{{- if .Values.dashboards.THEACTUALBOARD.enabled }}\n# GENERATED DO NOT EDIT\n$1\n\n{{{{- end }}\n' charts/cx-dashboards/templates/cx${board}.yaml
+    sd 'THEACTUALBOARD' "$board" charts/cx-dashboards/templates/cx${board}.yaml
   done
   # ensure it can be generated
   rm -rf deploy/dashtest/
-  helm template dashboards ./charts/dashboards -n default --output-dir deploy/dashtest --debug
+  helm template dashboards ./charts/cx-dashboards -n default --output-dir deploy/dashtest --debug
