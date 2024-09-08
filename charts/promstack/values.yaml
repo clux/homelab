@@ -129,17 +129,16 @@ kube-prometheus-stack:
 
     sidecar:
       enabled: true
-      # Only make the sidecar scan configmaps, not secrets.
       dashboards:
         enabled: true
+        # only scan configmaps, not secrets.
         resource: configmap
         searchNamespace: monitoring
         provider:
           name: sidecarProvider
           allowUiUpdates: false
-          foldersFromFilesStructure: true
       datasources:
-        # datasources are mounted at boot time
+        # datasources are mounted via datasources.yaml
         enabled: false
 
   kubeApiServer:
