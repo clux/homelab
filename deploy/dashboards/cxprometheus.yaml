@@ -196,7 +196,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "label_replace(prometheus_build_info, \"repository\", \"$1/$1\", \"container\", \"(.*)\")",
+              "expr": "label_replace(avg(prometheus_build_info) by (repository, container, version), \"repository\", \"$1/$1\", \"container\", \"(.*)\")",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -211,7 +211,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "label_replace(prometheus_operator_build_info, \"repository\", \"prometheus-operator/prometheus-operator\", \"container\", \"(.*)\")",
+              "expr": "label_replace(avg(prometheus_operator_build_info) by (repository, container, version), \"repository\", \"prometheus-operator/prometheus-operator\", \"container\", \"(.*)\")",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -226,7 +226,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "label_replace(grafana_build_info, \"repository\", \"grafana/grafana\", \"container\", \"(.*)\")",
+              "expr": "label_replace(avg(grafana_build_info) by (repository, container, version), \"repository\", \"grafana/grafana\", \"container\", \"(.*)\")",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -2099,8 +2099,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2223,8 +2222,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2448,8 +2446,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "#EAB839",
@@ -2553,8 +2550,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",

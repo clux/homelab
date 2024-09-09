@@ -1,16 +1,15 @@
-
 urls:
   prometheus: http://prometheus.clux.dev
   alertmanager: http://alertmanager.clux.dev
 
 dashboards:
   home:
-    enabled: true
+    enabled: false
   machine:
-    enabled: true
+    enabled: false
   prometheus:
-    enabled: true
+    enabled: false
   alertmanager:
-    enabled: true
+    enabled: false
   flux:
-    enabled: true
+    enabled: false
