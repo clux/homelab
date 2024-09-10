@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   cx-dashboards:
   - apiVersion: v2
+    created: "2024-09-10T22:44:41.166031605Z"
+    description: cx dashboard configmaps
+    digest: 816a3ab2cfe793c08927dd47acd24e529a0803aa356a0921fb20188ef7196560
+    name: cx-dashboards
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/cx-dashboards-0.1.6/cx-dashboards-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
     created: "2024-09-09T21:44:49.631274175Z"
     description: cx dashboard configmaps
     digest: e0b283515ddce8ba66784e60b63a08baf743a6d0c7c295f85a651180e8525f85
@@ -122,4 +131,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/promstack-0.5.0/promstack-0.5.0.tgz
     version: 0.5.0
-generated: "2024-09-09T21:44:49.631290416Z"
+generated: "2024-09-10T22:44:41.166058014Z"
