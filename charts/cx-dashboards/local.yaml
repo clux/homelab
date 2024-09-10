@@ -1,0 +1,7 @@
+urls:
+  prometheus: http://0.0.0.0:8080
+  alertmanager: http://0.0.0.0:8080
+
+dashboards:
+  flux:
+    enabled: false

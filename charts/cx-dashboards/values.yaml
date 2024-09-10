@@ -4,12 +4,12 @@ urls:
 
 dashboards:
   home:
-    enabled: false
+    enabled: true
   machine:
-    enabled: false
+    enabled: true
   prometheus:
-    enabled: false
+    enabled: true
   alertmanager:
-    enabled: false
+    enabled: true
   flux:
-    enabled: false
+    enabled: true

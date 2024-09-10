@@ -81,8 +81,9 @@ gen-dashboards:
 # local testing methods
 
 [private] # locally apply prometheus into a local cluster
-local-prom: (gen-prom-raw "./charts/promstack/local.yaml") crds
-  kubectl apply -f deploy/promstack/ -R -n monitoring
+local-prom:
+  helm install promstack clux/promstack -f charts/promstack/local.yaml
+  helm install dashboards clux/cx-dashboards -f charts/cx-dashboards/local.yaml
 
 [private] # forward prometheus default port to check metrics ui
 forward-prom:
