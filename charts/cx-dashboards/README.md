@@ -2,6 +2,8 @@
 
 A set of modern dashboards for small clusters with prometheus backlinks.
 
+Designed to work even with a minimal prometheus with lots of metric and rule drops, as showcased in the sibling [promstack chart](https://github.com/clux/homelab/tree/main/charts/promstack).
+
 ## Installation
 Can be installed in two ways:
 
