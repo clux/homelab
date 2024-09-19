@@ -60,17 +60,12 @@ gen-crds:
   #!/usr/bin/env bash
   version="$(cat deploy/promstack/promstack/charts/kube-prometheus-stack/templates/prometheus-operator/deployment.yaml | yq '.spec.template.spec.containers[0].image' -y | cut -d':' -f2)"
   echo "Inferred prometheus-operator version: ${version}"
-  crdurl="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${version}/example/prometheus-operator-crd/"
-  cd crds
-  curl -sSL "${crdurl}/monitoring.coreos.com_prometheusrules.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_podmonitors.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_probes.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_prometheuses.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_alertmanagerconfigs.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_servicemonitors.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_thanosrulers.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_thanosrulers.yaml" -O
-  curl -sSL "${crdurl}/monitoring.coreos.com_alertmanagers.yaml" -O
+  crdbase="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${version}/example/prometheus-operator-crd/monitoring.coreos.com"
+  rm -rf crds && mkdir crds && cd crds
+  declare -a crds=("prometheusrules" "podmonitors" "probes" "prometheuses" "alertmanagerconfigs" "servicemonitors" "alertmanagers")
+  for crd in "${crds[@]}"; do
+    curl -sSL "${crdbase}_${crd}.yaml" -O
+  done
 
 [group('gen'), doc('generate dashboard yaml from grafana json in dashboards folder')]
 gen-dashboards:
