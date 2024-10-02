@@ -94,6 +94,13 @@ kube-prometheus-stack:
       namespaced: true
 
     grafana.ini:
+      auth.anonymous:
+        enabled: true
+        org_role: Admin
+      auth.basic:
+        enabled: false
+      auth:
+        disable_login_form: true
       analytics:
         check_for_updates: false
       unified_alerting:
@@ -187,6 +194,9 @@ kube-prometheus-stack:
       - sourceLabels: [__name__]
         action: drop
         regex: 'container_(memory_failures|last_seen|memory_kernel|memory_failcnt|blkio_device|oom_events|start_time|threads|ulimits_soft).*'
+      # drop interface label for network metrics (unused in computation)
+      - action: labeldrop
+        regex: 'interface'
       metricRelabelings:
       # Drop almost all kubelet metrics, only want cpu/memory usage
       - sourceLabels: [__name__]

@@ -38,6 +38,10 @@ kube-prometheus-stack:
       enabled: true
       hosts:
       - grafana.clux.dev
+      tls:
+      - secretName: grafana-tls
+        hosts:
+        - grafana.clux.dev
     grafana.ini:
       server:
         domain: grafana.clux.dev
