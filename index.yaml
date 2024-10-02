@@ -64,6 +64,23 @@ entries:
     version: 0.1.1
   promstack:
   - apiVersion: v2
+    created: "2024-10-02T22:46:56.586024707Z"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: '*'
+    - condition: tempo.enabled
+      name: tempo
+      repository: https://grafana.github.io/helm-charts
+      version: '*'
+    description: wrapper over kube-prometheus-stack and tooling
+    digest: b8b61ec0d2d610172fb126639afa252010b37740ae00fd74bc5182c025880dff
+    name: promstack
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/promstack-0.6.3/promstack-0.6.3.tgz
+    version: 0.6.3
+  - apiVersion: v2
     created: "2024-09-08T11:25:06.613966196Z"
     dependencies:
     - name: kube-prometheus-stack
@@ -131,4 +148,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/promstack-0.5.0/promstack-0.5.0.tgz
     version: 0.5.0
-generated: "2024-09-10T22:44:41.166058014Z"
+generated: "2024-10-02T22:46:56.586043442Z"
