@@ -9,9 +9,9 @@ metadata:
     app: promstack-kubelet    
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "62.3.1"
+    app.kubernetes.io/version: "64.0.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-62.3.1
+    chart: kube-prometheus-stack-64.0.0
     release: "promstack"
     heritage: "Helm"
 spec:
@@ -104,6 +104,8 @@ spec:
       regex: container_(memory_failures|last_seen|memory_kernel|memory_failcnt|blkio_device|oom_events|start_time|threads|ulimits_soft).*
       sourceLabels:
       - __name__
+    - action: labeldrop
+      regex: interface
     relabelings:
     - action: replace
       sourceLabels:
