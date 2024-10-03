@@ -10,16 +10,12 @@ fail() {
 main() {
   local RESULT
   command -v jq > /dev/null || fail "jq must be installed"
-  command -v sed > /dev/null || fail "sed must be installed" # hopefully mac sed can do basics..
+  command -v sd > /dev/null || fail "sd must be installed"
 
   # Read from dashboard json files
   [ -f "$1" ] || fail "a file must be given"
   RESULT="$(cat "$1")"
   OUTPUT="${2:-./deploy/dashboards}"
-
-  # For consistency ensure dashboard datasources always say just "Prometheus"
-  # shellcheck disable=SC2001
-  RESULT="$(echo "${RESULT}" | sed 's/\"datasource\"\: null\,/\"datasource\"\: \"Prometheus\",/g')"
 
   # NB: Not using folders because uids are not consistent across grafana replicas
   # Use tags in dashboards instead.
