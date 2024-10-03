@@ -1,0 +1,23 @@
+---
+# Source: flux/charts/flux2/templates/cluster-reconciler-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+  name: cluster-reconciler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kustomize-controller
+  namespace: flux
+- kind: ServiceAccount
+  name: helm-controller
+  namespace: flux

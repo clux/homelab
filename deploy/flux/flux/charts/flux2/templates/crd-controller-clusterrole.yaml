@@ -1,0 +1,79 @@
+---
+# Source: flux/charts/flux2/templates/crd-controller-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: crd-controller
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+rules:
+- apiGroups: ['source.toolkit.fluxcd.io']
+  resources: ['*']
+  verbs: ['*']
+- apiGroups: ['kustomize.toolkit.fluxcd.io']
+  resources: ['*']
+  verbs: ['*']
+- apiGroups: ['helm.toolkit.fluxcd.io']
+  resources: ['*']
+  verbs: ['*']
+- apiGroups: ['notification.toolkit.fluxcd.io']
+  resources: ['*']
+  verbs: ['*']
+- apiGroups: ['image.toolkit.fluxcd.io']
+  resources: ['*']
+  verbs: ['*']
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - secrets
+  - configmaps
+  - serviceaccounts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+# required by leader election
+- apiGroups:
+    - ""
+  resources:
+    - configmaps
+  verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiGroups:
+    - ""
+  resources:
+    - configmaps/status
+  verbs:
+    - get
+    - update
+    - patch
+- apiGroups:
+  - "coordination.k8s.io"
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete

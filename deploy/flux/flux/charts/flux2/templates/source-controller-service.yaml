@@ -1,0 +1,22 @@
+---
+# Source: flux/charts/flux2/templates/source-controller-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+    control-plane: controller
+  name: source-controller
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: source-controller
+  type: ClusterIP

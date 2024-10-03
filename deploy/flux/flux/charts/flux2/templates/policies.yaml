@@ -1,0 +1,65 @@
+---
+# Source: flux/charts/flux2/templates/policies.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+  name: allow-egress
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - podSelector: {}
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---
+# Source: flux/charts/flux2/templates/policies.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+  name: allow-scraping
+spec:
+  ingress:
+  - from:
+    - namespaceSelector: {}
+    ports:
+    - port: 8080
+      protocol: TCP
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+# Source: flux/charts/flux2/templates/policies.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+  name: allow-webhooks
+spec:
+  ingress:
+  - from:
+    - namespaceSelector: {}
+  podSelector:
+    matchLabels:
+      app: notification-controller
+  policyTypes:
+  - Ingress

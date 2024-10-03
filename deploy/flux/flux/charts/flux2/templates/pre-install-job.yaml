@@ -1,0 +1,44 @@
+---
+# Source: flux/charts/flux2/templates/pre-install-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "flux-flux-check"
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: "flux"
+      labels:
+        app.kubernetes.io/instance: "flux"
+        app.kubernetes.io/managed-by: "Helm"
+        app.kubernetes.io/version: "2.3.0"
+        app.kubernetes.io/part-of: flux
+        helm.sh/chart: "flux2-2.13.0"
+    spec:
+      restartPolicy: Never
+      serviceAccountName: "flux-flux-check"
+      automountServiceAccountToken: true
+      containers:
+      - name: flux-cli
+        image: ghcr.io/fluxcd/flux-cli:v2.3.0
+        command: ["/usr/local/bin/flux", "check",  "--pre", "--namespace", flux]
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault

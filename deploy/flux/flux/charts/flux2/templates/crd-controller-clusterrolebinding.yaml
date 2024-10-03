@@ -1,0 +1,35 @@
+---
+# Source: flux/charts/flux2/templates/crd-controller-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: crd-controller
+  labels:
+    app.kubernetes.io/instance: "flux"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/part-of: flux
+    helm.sh/chart: flux2-2.13.0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: crd-controller
+subjects:
+  - kind: ServiceAccount
+    name: kustomize-controller
+    namespace: flux
+  - kind: ServiceAccount
+    name: helm-controller
+    namespace: flux
+  - kind: ServiceAccount
+    name: source-controller
+    namespace: flux
+  - kind: ServiceAccount
+    name: notification-controller
+    namespace: flux
+  - kind: ServiceAccount
+    name: image-reflector-controller
+    namespace: flux
+  - kind: ServiceAccount
+    name: image-automation-controller
+    namespace: flux
