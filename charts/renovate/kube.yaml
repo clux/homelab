@@ -1,0 +1,6 @@
+renovate:
+  repositories: ['"kube-rs/k8s-pb"']
+  fullnameOverride: 'renovate-kube'
+  envFrom:
+  - secretRef:
+      name: renovate-kube-pat

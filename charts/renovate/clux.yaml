@@ -1,0 +1,6 @@
+renovate:
+  repositories: ['"clux/renovate"']
+  fullnameOverride: 'renovate-clux'
+  envFrom:
+  - secretRef:
+      name: renovate-ssz-pat-classic

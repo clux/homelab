@@ -1,0 +1,9 @@
+apiVersion: v2
+name: renovate
+description: wrapper over renovate
+type: application
+version: 0.1.0
+dependencies:
+- name: renovate
+  version: "*"
+  repository: https://docs.renovatebot.com/helm-charts
