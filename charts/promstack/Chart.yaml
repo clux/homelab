@@ -2,7 +2,7 @@ apiVersion: v2
 name: promstack
 description: wrapper over kube-prometheus-stack and tooling
 type: application
-version: 0.6.3
+version: 0.6.4
 dependencies:
 - name: kube-prometheus-stack
   version: "*"
