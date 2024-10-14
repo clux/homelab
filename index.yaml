@@ -64,6 +64,23 @@ entries:
     version: 0.1.1
   promstack:
   - apiVersion: v2
+    created: "2024-10-14T08:41:49.731933054Z"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: '*'
+    - condition: tempo.enabled
+      name: tempo
+      repository: https://grafana.github.io/helm-charts
+      version: '*'
+    description: wrapper over kube-prometheus-stack and tooling
+    digest: 746a3cc8ddf3f39fb054814a1b0aed132651c53b76dcaaa98360f010d9ae3740
+    name: promstack
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/promstack-0.6.4/promstack-0.6.4.tgz
+    version: 0.6.4
+  - apiVersion: v2
     created: "2024-10-02T22:46:56.586024707Z"
     dependencies:
     - name: kube-prometheus-stack
@@ -148,4 +165,18 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/promstack-0.5.0/promstack-0.5.0.tgz
     version: 0.5.0
-generated: "2024-10-02T22:46:56.586043442Z"
+  renovate:
+  - apiVersion: v2
+    created: "2024-10-14T08:41:49.873273454Z"
+    dependencies:
+    - name: renovate
+      repository: https://docs.renovatebot.com/helm-charts
+      version: '*'
+    description: wrapper over renovate
+    digest: 8b0e079c9aed779adfdcb1b8ee4767a7f141c7eec43601bfad2888d41850cfde
+    name: renovate
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-10-14T08:41:49.87330882Z"
