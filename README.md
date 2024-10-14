@@ -20,4 +20,5 @@ then `helm search repo clux` to see the charts.
 
 - [promstack](https://github.com/clux/homelab/tree/main/charts/promstack) :: A low-footprint prometheus/observability chart
 - [cx-dashboards](https://github.com/clux/homelab/tree/main/charts/cx-dashboards) :: A set of modern dashboards for small clusters with prometheus backlinks
+- [flux](https://github.com/clux/homelab/tree/main/charts/flux) :: Minimal flux for gitops from this repo
 - [renovate](https://github.com/clux/homelab/tree/main/charts/renovate) :: renovate for @clux and @kube-rs running [clux/renovate](https://github.com/clux/renovate) img

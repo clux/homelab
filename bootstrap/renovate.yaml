@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: renovate
+  namespace: flux
+spec:
+  interval: 60m # just ping when changing
+  path: ./deploy/renovate
+  timeout: 2m
+  prune: true
+  targetNamespace: renovate
+  healthChecks: []
+  sourceRef:
+    kind: GitRepository
+    name: homelab
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: v1.31
+  name: renovate

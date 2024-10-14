@@ -55,6 +55,14 @@ gen-flux:
   rm -rf deploy/flux
   helm template flux ./charts/flux --create-namespace -n flux --skip-tests --output-dir deploy/flux
 
+[group('gen'), doc('generate renovate from charts')]
+gen-renovate:
+  rm -rf deploy/renovate
+  helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/kube -f charts/renovate/kube.yaml --debug
+  cat deploy/renovate/kube/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+  helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/clux -f charts/renovate/clux.yaml --debug
+  cat deploy/renovate/clux/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+
 [group('gen'), doc('generate crds (run AFTER gen-prom)')]
 gen-crds:
   #!/usr/bin/env bash

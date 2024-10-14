@@ -1,0 +1,75 @@
+---
+# Source: renovate/charts/renovate/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate-kube
+  labels:
+    helm.sh/chart: renovate-38.119.0
+    app.kubernetes.io/name: renovate
+    app.kubernetes.io/instance: renovate
+    app.kubernetes.io/version: "38.119.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  schedule: "@daily"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: renovate
+        app.kubernetes.io/instance: renovate
+    spec:
+      ttlSecondsAfterFinished: 86400
+      activeDeadlineSeconds: 3600
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: renovate
+            app.kubernetes.io/instance: renovate
+        spec:
+          serviceAccountName: default
+          restartPolicy: Never
+          containers:
+            - name: renovate
+              image: "ghcr.io/clux/renovate:37.440.7-slim3"
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: config-volume
+                  mountPath: /usr/src/app/config.json
+                  subPath: config.json
+                - name: ssh-config-volume
+                  mountPath: /home/ubuntu/.ssh
+                  readOnly: true
+                - name: renovate-kube-cache
+                  mountPath: /tmp/renovate
+              env:
+                - name: RENOVATE_CONFIG_FILE
+                  value: /usr/src/app/config.json
+                - name: "LOG_LEVEL"
+                  value: "debug"
+                - name: "OTEL_EXPORTER_OTLP_ENDPOINT"
+                  value: "http://promstack-tempo.monitoring.svc:4318"
+              envFrom:
+                - secretRef:
+                    name: renovate-kube-pat
+              resources:
+                limits:
+                  cpu: 4
+                  memory: 8Gi
+                requests:
+                  memory: 1Gi
+          volumes:
+            - name: config-volume
+              configMap:
+                name: renovate-kube-config
+            - name: renovate-kube-cache
+              persistentVolumeClaim:
+                claimName: renovate-kube-cache
+            - name: ssh-config-volume
+              secret:
+                secretName: renovate-ssh
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
