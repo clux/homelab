@@ -1,6 +1,10 @@
+---
+# Cronjob instance for kube-rs
 renovate:
   repositories: ['"kube-rs/k8s-pb"']
   fullnameOverride: 'renovate-kube'
   envFrom:
+  # Fine grained, minimal renovate token https://docs.renovatebot.com/modules/platform/github/#running-using-a-fine-grained-token
+  # For kube-rs org via sszynrae. kube-rs org has to approve the PAT.
   - secretRef:
       name: renovate-kube-pat

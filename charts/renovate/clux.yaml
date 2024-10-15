@@ -1,6 +1,10 @@
+---
+# Cronjob instance for clux
 renovate:
   repositories: ['"clux/renovate"']
   fullnameOverride: 'renovate-clux'
   envFrom:
+  # Classic PAT https://docs.renovatebot.com/modules/platform/github/#authentication
+  # For clux's repos via sszynrae. Have to sszynrae as collaborator to the repos.
   - secretRef:
       name: renovate-ssz-pat-classic

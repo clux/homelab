@@ -2,6 +2,7 @@
 renovate:
   # templated config values
   repositories: [] #  must be json
+
   # https://github.com/renovatebot/helm-charts/blob/main/charts/renovate/values.yaml
   cronjob:
     #schedule: '0 1 * * *'  # At 01:00 every day
@@ -18,18 +19,7 @@ renovate:
     jobBackoffLimit: '0'
     #parallelism: ''
     initContainers: []
-    # Verify tooling
-    # preCommand: |
-    #   set -x
-    #   rg --version && which rg
-    #   fd --version && which fd
-    #   just --version && which just
-    #   sd --version && which sd
-    #   yq --version && which yq
-    #   protoc --version || which protoc
-    #   cargo --version && which cargo
-    #   rustc --version && which rustc
-    #   cargo fmt --version && which rustfmt
+
   image:
     registry: ghcr.io
     tag: 37.440.7-slim3
