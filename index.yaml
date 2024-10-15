@@ -167,6 +167,19 @@ entries:
     version: 0.5.0
   renovate:
   - apiVersion: v2
+    created: "2024-10-15T20:19:01.91029615Z"
+    dependencies:
+    - name: renovate
+      repository: https://docs.renovatebot.com/helm-charts
+      version: '*'
+    description: wrapper over renovate
+    digest: 2da235921595d428ca5be14f13e0bd2d1bd000d86d2ccce87a68734018bc40b5
+    name: renovate
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/renovate-0.1.1/renovate-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2024-10-14T08:41:49.873273454Z"
     dependencies:
     - name: renovate
@@ -179,4 +192,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-14T08:41:49.87330882Z"
+generated: "2024-10-15T20:19:01.910328189Z"
