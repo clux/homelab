@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: renovate-clux
+  name: renovate-forgejo
   labels:
     helm.sh/chart: renovate-38.119.0
     app.kubernetes.io/name: renovate
@@ -42,16 +42,27 @@ spec:
                 - name: ssh-config-volume
                   mountPath: /home/ubuntu/.ssh
                   readOnly: true
-                - name: renovate-clux-cache
+                - mountPath: /etc/ssl/certs/clux.dev.root.ca.pem
+                  name: extra-cert
+                  subPath: clux.dev.root.ca.pem
+                - name: renovate-forgejo-cache
                   mountPath: /tmp/renovate
               env:
                 - name: RENOVATE_CONFIG_FILE
                   value: /usr/src/app/config.json
                 - name: "LOG_LEVEL"
                   value: "debug"
+                - name: "NODE_EXTRA_CA_CERTS"
+                  value: "/etc/ssl/certs/clux.dev.root.ca.pem"
+                - name: "RENOVATE_AUTODISCOVER"
+                  value: "false"
+                - name: "RENOVATE_ENDPOINT"
+                  value: "https://forgejo.clux.dev/api/v1"
+                - name: "RENOVATE_GIT_URL"
+                  value: "ssh"
               envFrom:
                 - secretRef:
-                    name: renovate-ssz-pat-classic
+                    name: renovate-forgejo-clux
               resources:
                 limits:
                   cpu: 4
@@ -61,13 +72,16 @@ spec:
           volumes:
             - name: config-volume
               configMap:
-                name: renovate-clux-config
-            - name: renovate-clux-cache
+                name: renovate-forgejo-config
+            - name: renovate-forgejo-cache
               persistentVolumeClaim:
-                claimName: renovate-clux-cache
+                claimName: renovate-forgejo-cache
             - name: ssh-config-volume
               secret:
-                secretName: renovate-ssh
+                secretName: renovate-ssh-full
+            - configMap:
+                name: clux-root-cert
+              name: extra-cert
           securityContext:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch

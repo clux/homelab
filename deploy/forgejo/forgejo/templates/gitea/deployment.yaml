@@ -1,0 +1,212 @@
+---
+# Source: forgejo/templates/gitea/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forgejo
+  namespace: "forgejo"
+  annotations:
+  labels:
+    helm.sh/chart: forgejo-10.0.1
+    app: forgejo
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/instance: forgejo
+    app.kubernetes.io/version: "9.0.1"
+    version: "9.0.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forgejo
+      app.kubernetes.io/instance: forgejo
+  template:
+    metadata:
+      annotations:
+        checksum/config: ae29278c2f18b920090950e90caafe33ea4a65bf12e3562e7d9de8e986204df2
+      labels:
+        helm.sh/chart: forgejo-10.0.1
+        app: forgejo
+        app.kubernetes.io/name: forgejo
+        app.kubernetes.io/instance: forgejo
+        app.kubernetes.io/version: "9.0.1"
+        version: "9.0.1"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: init-directories
+          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/sbin/init_directory_structure.sh"]
+          env:
+            - name: GITEA_APP_INI
+              value: /data/gitea/conf/app.ini
+            - name: GITEA_CUSTOM
+              value: /data/gitea
+            - name: GITEA_WORK_DIR
+              value: /data
+            - name: GITEA_TEMP
+              value: /tmp/gitea
+          volumeMounts:
+            - name: init
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+            
+          securityContext:
+            {}
+          resources:
+            limits: {}
+            requests:
+              cpu: 100m
+              memory: 128Mi
+        - name: init-app-ini
+          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/sbin/config_environment.sh"]
+          env:
+            - name: GITEA_APP_INI
+              value: /data/gitea/conf/app.ini
+            - name: GITEA_CUSTOM
+              value: /data/gitea
+            - name: GITEA_WORK_DIR
+              value: /data
+            - name: GITEA_TEMP
+              value: /tmp/gitea
+          volumeMounts:
+            - name: config
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+            - name: inline-config-sources
+              mountPath: /env-to-ini-mounts/inlines/
+            
+          securityContext:
+            {}
+          resources:
+            limits: {}
+            requests:
+              cpu: 100m
+              memory: 128Mi
+        - name: configure-gitea
+          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          command: ["/usr/sbin/configure_gitea.sh"]
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: GITEA_APP_INI
+              value: /data/gitea/conf/app.ini
+            - name: GITEA_CUSTOM
+              value: /data/gitea
+            - name: GITEA_WORK_DIR
+              value: /data
+            - name: GITEA_TEMP
+              value: /tmp/gitea
+            - name: HOME
+              value: /data/gitea/git
+            - name: GITEA_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key:  username
+                  name: gitea-admin-secret
+            - name: GITEA_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key:  password
+                  name: gitea-admin-secret
+            - name: GITEA_ADMIN_PASSWORD_MODE
+              value: initialOnlyRequireReset
+          volumeMounts:
+            - name: init
+              mountPath: /usr/sbin
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+            
+          resources:
+            limits: {}
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: forgejo
+          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          imagePullPolicy: IfNotPresent
+          env:
+            # SSH Port values have to be set here as well for openssh configuration
+            - name: SSH_LISTEN_PORT
+              value: "2222"
+            - name: SSH_PORT
+              value: "22"
+            - name: GITEA_APP_INI
+              value: /data/gitea/conf/app.ini
+            - name: GITEA_CUSTOM
+              value: /data/gitea
+            - name: GITEA_WORK_DIR
+              value: /data
+            - name: GITEA_TEMP
+              value: /tmp/gitea
+            - name: TMPDIR
+              value: /tmp/gitea
+            - name: HOME
+              value: /data/gitea/git
+          ports:
+            - name: ssh
+              containerPort: 2222
+            - name: http
+              containerPort: 3000
+          livenessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          resources:
+            {}
+          securityContext:
+            {}
+          volumeMounts:
+            - name: temp
+              mountPath: /tmp
+            - name: data
+              mountPath: /data
+            
+      volumes:
+        - name: init
+          secret:
+            secretName: forgejo-init
+            defaultMode: 110
+        - name: config
+          secret:
+            secretName: forgejo
+            defaultMode: 110
+        - name: inline-config-sources
+          secret:
+            secretName: forgejo-inline-config
+        - name: temp
+          emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: forgejo-storage

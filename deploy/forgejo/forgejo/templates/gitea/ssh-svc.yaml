@@ -1,0 +1,29 @@
+---
+# Source: forgejo/templates/gitea/ssh-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: forgejo-ssh
+  namespace: "forgejo"
+  labels:
+    helm.sh/chart: forgejo-10.0.1
+    app: forgejo
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/instance: forgejo
+    app.kubernetes.io/version: "9.0.1"
+    version: "9.0.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    metallb.universe.tf/allow-shared-ip: test
+spec:
+  type: NodePort
+  externalTrafficPolicy: Local
+  ports:
+  - name: ssh
+    port: 9022
+    targetPort: 2222
+    protocol: TCP
+    nodePort: 32222
+  selector:
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/instance: forgejo

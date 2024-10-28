@@ -1,0 +1,18 @@
+---
+# Source: forgejo/templates/gitea/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: forgejo-storage
+  namespace: "forgejo"
+  annotations:
+    helm.sh/resource-policy: keep
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  
+  resources:
+    requests:
+      storage: 50Gi

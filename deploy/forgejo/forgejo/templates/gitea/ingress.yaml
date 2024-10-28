@@ -1,0 +1,32 @@
+---
+# Source: forgejo/templates/gitea/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: forgejo
+  namespace: "forgejo"
+  labels:
+    helm.sh/chart: forgejo-10.0.1
+    app: forgejo
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/instance: forgejo
+    app.kubernetes.io/version: "9.0.1"
+    version: "9.0.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  tls:
+    - hosts:
+        - "forgejo.clux.dev"
+      secretName: forgejo-tls
+  rules:
+    - host: "forgejo.clux.dev"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: forgejo-http
+                port:
+                  number: 3000

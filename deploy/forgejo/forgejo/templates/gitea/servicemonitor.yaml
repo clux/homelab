@@ -1,0 +1,22 @@
+---
+# Source: forgejo/templates/gitea/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: forgejo
+  namespace: "forgejo"
+  labels:
+    helm.sh/chart: forgejo-10.0.1
+    app: forgejo
+    app.kubernetes.io/name: forgejo
+    app.kubernetes.io/instance: forgejo
+    app.kubernetes.io/version: "9.0.1"
+    version: "9.0.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forgejo
+      app.kubernetes.io/instance: forgejo
+  endpoints:
+  - port: http
