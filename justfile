@@ -30,9 +30,6 @@ update chart:
 # -----------------------------------------------------------------------------
 # generators - generated folders are watched by flux
 
-[group('gen'), doc('generate everything from sources')]
-gen: gen-promstack gen-crds gen-dashboards gen-flux
-
 [group('gen'), doc('generate prom from charts')]
 gen-promstack: (gen-prom-raw "./charts/promstack/homelab.yaml")
 [private]
