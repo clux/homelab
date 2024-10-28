@@ -1,0 +1,66 @@
+---
+# Cronjob instance for forgejo
+renovate:
+  repositories: []
+  fullnameOverride: 'renovate-forgejo'
+  envFrom:
+  # Token generated at https://forgejo.clux.dev/user/settings/applications
+  # Documented in https://forgejo.org/docs/next/user/token-scope/
+  # Satisfying requirements in https://docs.renovatebot.com/modules/platform/gitea/
+  # read:{user,organization,misc,email} + rw:{repo,issue}
+  - secretRef:
+      name: renovate-forgejo-clux
+
+  extraVolumes:
+  - name: extra-cert
+    configMap:
+      name: clux-root-cert
+
+  extraVolumeMounts:
+  - name: extra-cert
+    mountPath: /etc/ssl/certs/clux.dev.root.ca.pem
+    subPath: clux.dev.root.ca.pem
+  env:
+    NODE_EXTRA_CA_CERTS: "/etc/ssl/certs/clux.dev.root.ca.pem"
+    RENOVATE_GIT_URL: 'ssh'
+    RENOVATE_ENDPOINT: "https://forgejo.clux.dev/api/v1"
+    RENOVATE_AUTODISCOVER: false
+
+  # TODO: GITHUB_TOKEN for release note fetching (may be throttled)
+  ssh_config:
+    # SSH for forgejo follows the gitlab setup with evars above
+    # https://docs.renovatebot.com/examples/self-hosting/#kubernetes-for-gitlab-using-git-over-ssh
+    # A key containing an ssh config for host forgejo:
+    # ---
+    # Host forgejo
+    #  HostName forgejo.clux.dev
+    #   Port 32222
+    #   User git
+    #   StrictHostKeyChecking no
+    #   IdentityFile ~/.ssh/id_rsa
+    # ...
+    # along with any ssh key added to the associated username below
+    existingSecret: 'renovate-ssh-full'
+
+  # different config for different platform
+  renovate:
+    config: |
+      {
+         "platform": "gitea",
+         "autodiscover": false,
+         "extends": [
+           ":semanticCommitsDisabled"
+         ],
+         "username": "clux",
+         "gitAuthor": "sszynrae <noreply@clux.dev>",
+         "automerge": true,
+         "automergeStrategy": "squash",
+         "allowedPostUpgradeCommands": ["just"],
+         "printConfig": true,
+         "dependencyDashboard": false,
+         "platformCommit": false,
+         "repositories": {{ .Values.repositories }},
+         "enabledManagers": ["helmv3", "custom.regex", "dockerfile", "cargo"],
+         "packageRules": [{"matchManagers": ["helmv3"], "rangeStrategy": "pin"}],
+         "customManagers": []
+      }
