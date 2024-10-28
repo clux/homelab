@@ -56,11 +56,11 @@ gen-flux:
 gen-renovate:
   rm -rf deploy/renovate
   helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/kube -f charts/renovate/kube.yaml --debug
-  cat deploy/renovate/kube/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+  cat deploy/renovate/kube/renovate/charts/renovate/templates/config.yaml | lq '.data["config.json"]' -r | jq
   helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/clux -f charts/renovate/clux.yaml --debug
-  cat deploy/renovate/clux/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+  cat deploy/renovate/clux/renovate/charts/renovate/templates/config.yaml | lq '.data["config.json"]' -r | jq
   helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/forgejo -f charts/renovate/forgejo.yaml --debug
-  cat deploy/renovate/forgejo/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+  cat deploy/renovate/forgejo/renovate/charts/renovate/templates/config.yaml | lq '.data["config.json"]' -r | jq
 
 [group('gen'), doc('generate forgejo from charts')]
 gen-forgejo:
@@ -70,7 +70,7 @@ gen-forgejo:
 [group('gen'), doc('generate crds (run AFTER gen-prom)')]
 gen-crds:
   #!/usr/bin/env bash
-  version="$(cat deploy/promstack/promstack/charts/kube-prometheus-stack/templates/prometheus-operator/deployment.yaml | yq '.spec.template.spec.containers[0].image' -y | cut -d':' -f2)"
+  version="$(cat deploy/promstack/promstack/charts/kube-prometheus-stack/templates/prometheus-operator/deployment.yaml | lq '.spec.template.spec.containers[0].image' -y | cut -d':' -f2)"
   echo "Inferred prometheus-operator version: ${version}"
   crdbase="https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${version}/example/prometheus-operator-crd/monitoring.coreos.com"
   rm -rf crds && mkdir crds && cd crds
@@ -118,7 +118,7 @@ init-flux:
   flux create secret git flux-key-{{ REPO }} \
     --namespace=flux \
     --url=ssh://git@github.com/{{ REPO }}.git
-  kubectl get secret flux-key-{{ REPO }} -n flux -oyaml | yq '.data["identity.pub"]' -r | base64 -d > keyfile
+  kubectl get secret flux-key-{{ REPO }} -n flux -oyaml | lq '.data["identity.pub"]' -r | base64 -d > keyfile
   gh repo deploy-key add keyfile -R {{ REPO }} -t "flux-${USER}" -w
   rm keyfile
 

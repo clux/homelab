@@ -309,7 +309,7 @@ data:
                       {
                         "targetBlank": true,
                         "title": "",
-                        "url": "https://github.com/Thhethssmuz/${__data.fields.Name}"
+                        "url": "https://github.com/clux/${__data.fields.Name}"
                       }
                     ]
                   }

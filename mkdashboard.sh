@@ -27,7 +27,7 @@ main() {
   DBNAME="$(echo "${RESULT}" | jq -r '.title | ascii_downcase')"
   DBNAME="${DBNAME//[^a-zA-Z0-9]/}" # sanitize
   # Indent dashboard content as json
-  local -r DBCONTENT_YAML="$(echo "${RESULT}" | yq | sed 's/^/    /')"
+  local -r DBCONTENT_YAML="$(echo "${RESULT}" | lq | sed 's/^/    /')"
   # Minify the content if it's > 250k characters to try to avoid 1MB etcd object size limit
   if [ "${#DBCONTENT_YAML}" -gt 250000 ]; then
     DBCONTENT="  ${DBNAME}.json: $(echo "${RESULT}" | jq -c "@json")"
