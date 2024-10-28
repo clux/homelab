@@ -1,0 +1,14 @@
+# THIS FILE IS NOT USED
+# The oci chart at forgejo.org does not support being helm repo added, and thus we cannot subchart it.
+# Possibly because it's a chart in a root folder which is not common for chart repositories.
+# At any rate helm does not support it.
+
+apiVersion: v2
+name: forgejo
+description: wrapper over forgejo
+type: application
+version: 0.1.0
+dependencies: []
+#- name: forgejo
+#  version: "*"
+#  repository: oci://code.forgejo.org/forgejo-helm/

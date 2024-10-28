@@ -1,0 +1,32 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo
+  namespace: flux
+spec:
+  interval: 60m # just ping when changing
+  path: ./deploy/forgejo
+  timeout: 2m
+  prune: true
+  targetNamespace: forgejo
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: forgejo
+    namespace: forgejo
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    name: forgejo-postgresql
+    namespace: forgejo
+  sourceRef:
+    kind: GitRepository
+    name: homelab
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: v1.31
+  name: forgejo

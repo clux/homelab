@@ -1,0 +1,91 @@
+---
+# https://code.forgejo.org/forgejo-helm/forgejo-helm/src/branch/main/values.yaml
+gitea:
+  # https://forgejo.org/docs/latest/admin/config-cheat-sheet/
+  config:
+    APP_NAME: 'forgejo'
+    # https://forgejo.org/docs/next/admin/config-cheat-sheet/#ui-ui
+    ui:
+      DEFAULT_THEME: forgejo-dark
+      REPO_PAGING_NUM: 30
+    # https://forgejo.org/docs/latest/admin/actions/
+    actions: {}
+    server:
+      #SSH_PORT: 2222 # clone url port
+      SSH_LISTEN_PORT: 2222 # rootless image
+      SSH_DOMAIN: forgejo
+      SSH_LOG_LEVEL: debug
+    # https://forgejo.org/docs/latest/admin/config-cheat-sheet/#repository-repository
+    repository:
+      ROOT: '~/gitea-repository'
+      DISABLE_HTTP_GIT: true
+      ENABLE_PUSH_CREATE_USER: true
+      DEFAULT_PUSH_CREATE_PRIVATE: false
+      DISABLED_REPO_UNITS: "repo.wiki,repo.ext_wiki"
+      DEFAULT_REPO_UNITS: "repo.code,repo.issues,repo.pulls,repo.actions"
+      DEFAULT_MERGE_STYLE: "squash"
+      DISABLE_MIGRATIONS: true
+  admin:
+    passwordMode: initialOnlyRequireReset
+    existingSecret: gitea-admin-secret
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+image:
+  rootless: true
+
+strategy:
+  type: Recreate
+
+ingress:
+  enabled: true
+  apiVersion: networking.k8s.io/v1
+  hosts:
+  - host: forgejo.clux.dev
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+  - secretName: forgejo-tls
+    hosts:
+    - forgejo.clux.dev
+
+service:
+  ssh:
+    port: 9022
+    nodePort: 32222
+    protocol: TCP
+    type: NodePort
+    targetPort: 2222
+    externalTrafficPolicy: Local
+    # For future metallb
+    annotations:
+      metallb.universe.tf/allow-shared-ip: test
+
+persistence:
+  enabled: true
+  create: true
+  mount: true
+  claimName: forgejo-storage
+  size: 50Gi
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+
+redis-cluster:
+  enabled: false
+postgresql-ha:
+  enabled: false
+# https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+postgresql:
+  enabled: true
+  primary:
+    pdb:
+      create: false
+    persistence:
+      volumeName: forgejo-postgres
+      size: 5Gi
+      annotations:
+        kustomize.toolkit.fluxcd.io/prune: disabled
