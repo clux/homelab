@@ -62,6 +62,16 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/flux-0.1.1/flux-0.1.1.tgz
     version: 0.1.1
+  forgejo:
+  - apiVersion: v2
+    created: "2024-10-28T19:26:07.470085001Z"
+    description: wrapper over forgejo
+    digest: 98139a4cce6332bba172e6a0da80d3600712c63e4415b345ee7e7d779e2a1f6c
+    name: forgejo
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/forgejo-0.1.0/forgejo-0.1.0.tgz
+    version: 0.1.0
   promstack:
   - apiVersion: v2
     created: "2024-10-14T08:41:49.731933054Z"
@@ -205,4 +215,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-28T19:13:42.921765872Z"
+generated: "2024-10-28T19:26:07.47011706Z"
