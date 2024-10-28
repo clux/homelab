@@ -62,6 +62,13 @@ gen-renovate:
   cat deploy/renovate/kube/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
   helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/clux -f charts/renovate/clux.yaml --debug
   cat deploy/renovate/clux/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+  helm template renovate ./charts/renovate -n renovate --skip-tests --output-dir deploy/renovate/forgejo -f charts/renovate/forgejo.yaml --debug
+  cat deploy/renovate/forgejo/renovate/charts/renovate/templates/config.yaml | yq '.data["config.json"]' -r | jq
+
+[group('gen'), doc('generate forgejo from charts')]
+gen-forgejo:
+  rm -rf deploy/forgejo
+  helm template forgejo -f ./charts/forgejo/values.yaml oci://code.forgejo.org/forgejo-helm/forgejo -n forgejo --skip-tests --output-dir deploy/forgejo
 
 [group('gen'), doc('generate crds (run AFTER gen-prom)')]
 gen-crds:
