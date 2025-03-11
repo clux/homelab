@@ -30,6 +30,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
+      "id": 10,
       "links": [
         {
           "asDropdown": false,
@@ -169,7 +170,7 @@ data:
             },
             "showHeader": false
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -379,7 +380,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -558,7 +559,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -668,7 +669,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -884,7 +885,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -994,7 +995,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1138,7 +1139,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1278,7 +1279,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.5",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1328,6 +1329,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 10,
                 "gradientMode": "none",
@@ -1414,11 +1416,12 @@ data:
               "showLegend": false
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "multi",
               "sort": "none"
             }
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1426,7 +1429,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[1h])) by (integration)",
+              "expr": "sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{`{{`}} integration {{`}}`}}",
@@ -1439,7 +1442,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[1h])) by (integration) > 0",
+              "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration) > 0",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Failed",
@@ -1447,7 +1450,7 @@ data:
               "refId": "B"
             }
           ],
-          "title": "$integration: Notifications Send Rate per hour",
+          "title": "$integration: Notifications Send Rate per $interval",
           "type": "timeseries"
         },
         {
@@ -1468,6 +1471,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 10,
                 "gradientMode": "none",
@@ -1574,11 +1578,12 @@ data:
               "showLegend": false
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "multi",
               "sort": "none"
             }
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1586,7 +1591,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_alerts_received_total{namespace=~\"$namespace\",service=~\"$service\"}[1h])) by (status)",
+              "expr": "sum(increase(alertmanager_alerts_received_total{namespace=~\"$namespace\",service=~\"$service\"}[$interval])) by (status)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{`{{`}} status {{`}}`}}",
@@ -1599,7 +1604,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_alerts_invalid_total{namespace=~\"$namespace\",service=~\"$service\"}[1h]))",
+              "expr": "sum(increase(alertmanager_alerts_invalid_total{namespace=~\"$namespace\",service=~\"$service\"}[$interval]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "invalid",
@@ -1607,7 +1612,7 @@ data:
               "refId": "B"
             }
           ],
-          "title": "Alerts receive rate per 1h",
+          "title": "Alerts receive rate per $interval",
           "type": "timeseries"
         },
         {
@@ -1641,6 +1646,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -1710,11 +1716,12 @@ data:
               "showLegend": false
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "multi",
               "sort": "none"
             }
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1722,7 +1729,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "1 - (\n(sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[1h])) by (integration))\n/\n(sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[1h])) by (integration))\n)",
+              "expr": "1 - (\n(sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration))\n/\n(sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration))\n)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "__auto",
@@ -1751,6 +1758,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -1820,11 +1828,12 @@ data:
               "showLegend": false
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "multi",
               "sort": "none"
             }
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -2160,8 +2169,9 @@ data:
           "type": "row"
         }
       ],
+      "preload": false,
       "refresh": "",
-      "schemaVersion": 39,
+      "schemaVersion": 40,
       "tags": [
         "cx",
         "prometheus"
@@ -2170,7 +2180,6 @@ data:
         "list": [
           {
             "current": {
-              "selected": false,
               "text": "monitoring",
               "value": "monitoring"
             },
@@ -2182,22 +2191,16 @@ data:
             "hide": 2,
             "includeAll": false,
             "label": "namespace",
-            "multi": false,
             "name": "namespace",
             "options": [],
             "query": "label_values(alertmanager_alerts, namespace)",
             "refresh": 2,
             "regex": "",
-            "skipUrlSync": false,
             "sort": 1,
-            "tagValuesQuery": "",
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
+            "type": "query"
           },
           {
             "current": {
-              "selected": false,
               "text": "promstack-alertmanager",
               "value": "promstack-alertmanager"
             },
@@ -2209,22 +2212,16 @@ data:
             "hide": 2,
             "includeAll": false,
             "label": "service",
-            "multi": false,
             "name": "service",
             "options": [],
             "query": "label_values(alertmanager_alerts, service)",
             "refresh": 2,
             "regex": "",
-            "skipUrlSync": false,
             "sort": 1,
-            "tagValuesQuery": "",
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
+            "type": "query"
           },
           {
             "current": {
-              "selected": false,
               "text": "All",
               "value": "$__all"
             },
@@ -2233,36 +2230,27 @@ data:
               "uid": "${DS_PROMETHEUS}"
             },
             "definition": "",
-            "hide": 0,
             "includeAll": true,
-            "multi": false,
             "name": "integration",
             "options": [],
             "query": "label_values(alertmanager_notifications_total{integration=~\".*\"}, integration)",
             "refresh": 2,
             "regex": "",
-            "skipUrlSync": false,
             "sort": 1,
-            "tagValuesQuery": "",
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
+            "type": "query"
           },
           {
             "current": {
-              "selected": false,
               "text": "Prometheus",
               "value": "Prometheus"
             },
             "hide": 2,
             "includeAll": false,
-            "multi": false,
             "name": "DS_PROMETHEUS",
             "options": [],
             "query": "prometheus",
             "refresh": 1,
             "regex": "",
-            "skipUrlSync": false,
             "type": "datasource"
           },
           {
@@ -2270,11 +2258,9 @@ data:
             "auto_count": 30,
             "auto_min": "10s",
             "current": {
-              "selected": false,
               "text": "1h",
               "value": "1h"
             },
-            "hide": 0,
             "label": "interval",
             "name": "interval",
             "options": [
@@ -2305,9 +2291,7 @@ data:
               }
             ],
             "query": "1m,5m,1h,6h,1d",
-            "queryValue": "",
             "refresh": 2,
-            "skipUrlSync": false,
             "type": "interval"
           }
         ]
@@ -2316,31 +2300,7 @@ data:
         "from": "now-2d",
         "to": "now"
       },
-      "timepicker": {
-        "refresh_intervals": [
-          "5s",
-          "10s",
-          "30s",
-          "1m",
-          "5m",
-          "15m",
-          "30m",
-          "1h",
-          "2h",
-          "1d"
-        ],
-        "time_options": [
-          "5m",
-          "15m",
-          "1h",
-          "6h",
-          "12h",
-          "24h",
-          "2d",
-          "7d",
-          "30d"
-        ]
-      },
+      "timepicker": {},
       "timezone": "utc",
       "title": "CX / Alertmanager",
       "uid": "cx-alertmanager",

@@ -59,6 +59,10 @@ The [cx / alertmanager](https://github.com/clux/homelab/blob/main/charts/cx-dash
 
 The feature is from [alertmanager 0.27](https://github.com/prometheus/alertmanager/releases/tag/v0.27.0).
 
+### Flux Dashboard
+
+The [cx / flux](https://github.com/clux/homelab/blob/main/charts/cx-dashboards/templates/cxflux.yaml) uses kube-state-metrics based custom metrics (configured under the promstack chart values under kube-state-metrics) to give proper cross links in tables of resources to their git origins.
+
 ## Contribution
 
 This chart is generated from the [raw grafana json folder](https://github.com/clux/homelab/tree/main/dashboards). Reasoned tweaks are considered, but please only git add any relevant changes (no url changes).
