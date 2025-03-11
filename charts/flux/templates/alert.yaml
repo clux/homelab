@@ -10,14 +10,10 @@ spec:
     rules:
     - alert: FluxSourceFailing
       annotations:
-        description: Flux update for `{{`{{`}} $labels.name {{`}}`}}` is failing in `source-controller`.
+        description: Flux `{{`{{`}} $labels.customresource_kind {{`}}`}}` source `{{`{{`}} $labels.name {{`}}`}}` is failing in `source-controller`.
       for: 10m
       keep_firing_for: 5m
-      {{- if .Values.flux2.prometheus.useKsm }}
-      expr: sum(gotk_reconcile_condition{kind="GitRepository", status!="True", type="Ready"}) by (name) >= 1
-      {{- else }}
-      expr: sum(gotk2_resource_info{ready!="True", customresource_kind="GitRepository"}) by (name) >= 1
-      {{- end }}
+      expr: sum(gotk_resource_info{ready="False", customresource_kind=~"GitRepository|OCIRepository"}) by (name, customresource_kind) >= 1
       labels:
         severity: warning
   - name: FluxApply
@@ -27,10 +23,6 @@ spec:
         description: Flux update for `{{`{{`}} $labels.name {{`}}`}}` has been failing in `kustomize-controller`.
       for: 5m
       keep_firing_for: 5m
-      {{- if .Values.flux2.prometheus.useKsm }}
-      expr: sum(gotk_reconcile_condition{kind="Kustomization", status!="True", type="Ready"}) by (name) >= 1
-      {{- else }}
-      expr: sum(gotk2_resource_info{ready!="True", customresource_kind="Kustomization"}) by (name) >= 1
-      {{- end }}
+      expr: sum(gotk_resource_info{ready="False", customresource_kind="Kustomization"}) by (name) >= 1
       labels:
         severity: warning

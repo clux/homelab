@@ -194,9 +194,6 @@ kube-prometheus-stack:
       - sourceLabels: [__name__]
         action: drop
         regex: 'container_(memory_failures|last_seen|memory_kernel|memory_failcnt|blkio_device|oom_events|start_time|threads|ulimits_soft).*'
-      # drop interface label for network metrics (unused in computation)
-      - action: labeldrop
-        regex: 'interface'
       metricRelabelings:
       # Drop almost all kubelet metrics, only want cpu/memory usage
       - sourceLabels: [__name__]
@@ -238,16 +235,21 @@ kube-prometheus-stack:
   ## Configuration for kube-state-metrics subchart
   kube-state-metrics:
     #extraArgs: ["-v"]
+    # Extra rbac for flux metrics
     rbac:
       create: true
       # For customResourceState for flux metrics
       # https://fluxcd.io/flux/monitoring/custom-metrics/
       extraRules:
-      - apiGroups: ["kustomize.toolkit.fluxcd.io", "source.toolkit.fluxcd.io"]
-        resources: ["gitrepositories", "kustomizations"]
+      - apiGroups: ["kustomize.toolkit.fluxcd.io"]
+        resources: ["kustomizations"]
         verbs: ["list", "watch"]
+      - apiGroups: ["source.toolkit.fluxcd.io"]
+        resources: ["gitrepositories", "ocirepositories"]
+        verbs: ["list", "watch"]
+    # Tell KSM to scrape flux conditions as metrics
     customResourceState:
-      enabled: false # override outside if using flux
+      enabled: true
       config:
         spec:
           # more or less verbatim from
@@ -257,7 +259,7 @@ kube-prometheus-stack:
               group: kustomize.toolkit.fluxcd.io
               version: v1
               kind: Kustomization
-            metricNamePrefix: gotk2
+            metricNamePrefix: gotk
             metrics:
             - name: "resource_info"
               help: "The current state of a Flux Kustomization resource."
@@ -267,16 +269,20 @@ kube-prometheus-stack:
                   labelsFromPath:
                     name: [ metadata, name ]
               labelsFromPath:
+                exported_namespace: [ metadata, namespace ]
                 ready: [ status, conditions, "[type=Ready]", status ]
                 suspended: [ spec, suspend ]
                 revision: [ status, lastAppliedRevision ]
                 source_name: [ spec, sourceRef, name ]
+                # extra labels so we can link to canonical sources from dashboards
+                cx_path: [ metadata, annotations, "cx.dashboards/path"]
+                cx_repo: [ metadata, annotations, "cx.dashboards/repo"]
+
           - groupVersionKind:
               group: source.toolkit.fluxcd.io
               version: v1
               kind: GitRepository
-            # need different names to avoid duplicate metric warnings in prom
-            metricNamePrefix: gotk3
+            metricNamePrefix: gotk
             metrics:
             - name: "resource_info"
               help: "The current state of a Flux GitRepository resource."
@@ -286,10 +292,37 @@ kube-prometheus-stack:
                   labelsFromPath:
                     name: [ metadata, name ]
               labelsFromPath:
+                exported_namespace: [ metadata, namespace ]
                 ready: [ status, conditions, "[type=Ready]", status ]
                 suspended: [ spec, suspend ]
                 revision: [ status, artifact, revision ]
                 url: [ spec, url ]
+                # extra label so we can link to canonical sources from dashboards
+                cx_path: [ metadata, annotations, "cx.dashboards/path"]
+                cx_repo: [ metadata, annotations, "cx.dashboards/repo"]
+
+          - groupVersionKind:
+              group: source.toolkit.fluxcd.io
+              version: v1beta2
+              kind: OCIRepository
+            metricNamePrefix: gotk
+            metrics:
+            - name: "resource_info"
+              help: "The current state of a Flux OCIRepository resource."
+              each:
+                type: Info
+                info:
+                  labelsFromPath:
+                    name: [ metadata, name ]
+              labelsFromPath:
+                exported_namespace: [ metadata, namespace ]
+                ready: [ status, conditions, "[type=Ready]", status ]
+                suspended: [ spec, suspend ]
+                revision: [ status, artifact, revision ]
+                url: [ spec, url ]
+                # extra label so we can link to canonical sources from dashboards
+                cx_path: [ metadata, annotations, "cx.dashboards/path"]
+                cx_repo: [ metadata, annotations, "cx.dashboards/repo"]
 
     # Opt-out of collectors we do not care about metrics for
     # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-state-metrics/values.yaml#L348C1-L377C1

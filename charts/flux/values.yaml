@@ -33,15 +33,12 @@ flux2:
         memory: 64Mi
 
   prometheus:
-    # have kind of migrated off podmonitors to custom KSM metrics
-    # since gotk_ metrics are deprecated
-    # they are created in kube-state-metrics in promstack now.
+    # NB: have migrated off gotk_ metrics for KSM metrics
     # https://fluxcd.io/flux/monitoring/metrics/
     # https://fluxcd.io/flux/monitoring/custom-metrics/
-    # but there's still lots of metrics there that's not deprecated?
-    # ..still investigating what is useful and stripping stuff
-    useKsm: true
-    podMonitor: # forked in templates for relabelings
+    # See ../promstack/values.yaml under kube-state-metrics
+    podMonitor:
+      # Forked for less buckets.
       create: false
 
   # security

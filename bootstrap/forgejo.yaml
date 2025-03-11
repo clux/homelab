@@ -4,6 +4,9 @@ kind: Kustomization
 metadata:
   name: forgejo
   namespace: flux
+  annotations:
+    cx.dashboards/path: bootstrap/forgejo.yaml
+    cx.dashboards/repo: https://github.com/clux/homelab
 spec:
   interval: 60m # just ping when changing
   path: ./deploy/forgejo
