@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   cx-dashboards:
   - apiVersion: v2
+    created: "2025-03-11T18:15:34.329339763Z"
+    description: cx dashboard configmaps
+    digest: 6146b1b57f07f3db8f3cd6ee03a708b49f683ab47b6b1ce19003539392b3487f
+    name: cx-dashboards
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/cx-dashboards-0.2.0/cx-dashboards-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2024-09-10T22:44:41.166031605Z"
     description: cx dashboard configmaps
     digest: 816a3ab2cfe793c08927dd47acd24e529a0803aa356a0921fb20188ef7196560
@@ -49,6 +58,20 @@ entries:
     version: 0.1.1
   flux:
   - apiVersion: v2
+    created: "2025-03-11T18:15:34.440572595Z"
+    dependencies:
+    - condition: flux2.enabled
+      name: flux2
+      repository: https://fluxcd-community.github.io/helm-charts
+      version: '*'
+    description: wrapper over flux2
+    digest: e2795c6a61eaccd9f5ed05fa0be6cfb4738d79249267f421b73dccb94a0ba02c
+    name: flux
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/flux-0.2.0/flux-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2024-09-01T17:29:45.306258409Z"
     dependencies:
     - condition: flux2.enabled
@@ -73,6 +96,23 @@ entries:
     - https://github.com/clux/homelab/releases/download/forgejo-0.1.0/forgejo-0.1.0.tgz
     version: 0.1.0
   promstack:
+  - apiVersion: v2
+    created: "2025-03-11T18:15:34.609007424Z"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: '*'
+    - condition: tempo.enabled
+      name: tempo
+      repository: https://grafana.github.io/helm-charts
+      version: '*'
+    description: wrapper over kube-prometheus-stack and tooling
+    digest: a02ae5b644a27d608f954713482a00a41835babadb17846010cf8adb00f101b7
+    name: promstack
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/promstack-0.7.0/promstack-0.7.0.tgz
+    version: 0.7.0
   - apiVersion: v2
     created: "2024-10-14T08:41:49.731933054Z"
     dependencies:
@@ -215,4 +255,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-28T19:26:07.47011706Z"
+generated: "2025-03-11T18:15:34.609061775Z"
