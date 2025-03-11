@@ -9,18 +9,26 @@ metadata:
     app: promstack-kubelet    
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "64.0.0"
+    app.kubernetes.io/version: "69.8.2"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-64.0.0
+    chart: kube-prometheus-stack-69.8.2
     release: "promstack"
     heritage: "Helm"
 spec:
   
   attachMetadata:
     node: false
+  jobLabel: k8s-app
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
   endpoints:
   - port: https-metrics
-    scheme: https
+    scheme: https    
     tlsConfig:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       insecureSkipVerify: true
@@ -60,8 +68,10 @@ spec:
   - port: https-metrics
     scheme: https
     path: /metrics/cadvisor
+    interval: 10s
     honorLabels: true
     honorTimestamps: true
+    trackTimestampsStaleness: true    
     tlsConfig:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       insecureSkipVerify: true
@@ -104,18 +114,8 @@ spec:
       regex: container_(memory_failures|last_seen|memory_kernel|memory_failcnt|blkio_device|oom_events|start_time|threads|ulimits_soft).*
       sourceLabels:
       - __name__
-    - action: labeldrop
-      regex: interface
     relabelings:
     - action: replace
       sourceLabels:
       - __metrics_path__
       targetLabel: metrics_path
-  jobLabel: k8s-app
-  namespaceSelector:
-    matchNames:
-    - kube-system
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: kubelet
-      k8s-app: kubelet

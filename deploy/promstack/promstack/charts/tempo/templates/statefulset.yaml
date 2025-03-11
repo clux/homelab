@@ -6,10 +6,10 @@ metadata:
   name: promstack-tempo
   namespace: monitoring
   labels:
-    helm.sh/chart: tempo-1.10.3
+    helm.sh/chart: tempo-1.18.3
     app.kubernetes.io/name: tempo
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/name: tempo
         app.kubernetes.io/instance: promstack
       annotations:
-        checksum/config: d63d7fd28e813dcd521ebe87fe9ea177fb3b19a417159485ee6ecd066492c52e
+        checksum/config: 4b5e0882c4dce9b4cd15ff11e8f012b6517d57111961e6fd0b17a5c68d5ce6af
     spec:
       serviceAccountName: promstack-tempo
       automountServiceAccountToken: true
@@ -32,7 +32,7 @@ spec:
       - args:
         - -config.file=/conf/tempo.yaml
         - -mem-ballast-size-mbs=1024
-        image: grafana/tempo:2.5.0
+        image: grafana/tempo:2.7.1
         imagePullPolicy: IfNotPresent
         name: tempo
         ports:
@@ -60,6 +60,24 @@ spec:
           name: otlp-http
         - containerPort: 55678
           name: opencensus
+        livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 3100
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+        readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 3100
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
         resources:
           {}
         env:

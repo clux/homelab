@@ -9,9 +9,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "64.0.0"
+    app.kubernetes.io/version: "69.8.2"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-64.0.0
+    chart: kube-prometheus-stack-69.8.2
     release: "promstack"
     heritage: "Helm"
     app: promstack-operator

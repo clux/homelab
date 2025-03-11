@@ -9,9 +9,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "64.0.0"
+    app.kubernetes.io/version: "69.8.2"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-64.0.0
+    chart: kube-prometheus-stack-69.8.2
     release: "promstack"
     heritage: "Helm"
     app: promstack-operator
@@ -30,9 +30,9 @@ spec:
         
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/instance: promstack
-        app.kubernetes.io/version: "64.0.0"
+        app.kubernetes.io/version: "69.8.2"
         app.kubernetes.io/part-of: promstack
-        chart: kube-prometheus-stack-64.0.0
+        chart: kube-prometheus-stack-69.8.2
         release: "promstack"
         heritage: "Helm"
         app: promstack-operator
@@ -41,17 +41,19 @@ spec:
     spec:
       containers:
         - name: promstack
-          image: "quay.io/prometheus-operator/prometheus-operator:v0.76.1"
+          image: "quay.io/prometheus-operator/prometheus-operator:v0.80.1"
           imagePullPolicy: "IfNotPresent"
           args:
             - --kubelet-service=kube-system/promstack-kubelet
+            - --kubelet-endpoints=true
+            - --kubelet-endpointslice=false
             - --localhost=127.0.0.1
-            - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.76.1
+            - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.80.1
             - --config-reloader-cpu-request=0
             - --config-reloader-cpu-limit=0
             - --config-reloader-memory-request=0
             - --config-reloader-memory-limit=0
-            - --thanos-default-base-image=quay.io/thanos/thanos:v0.36.1
+            - --thanos-default-base-image=quay.io/thanos/thanos:v0.37.2
             - --secret-field-selector=type!=kubernetes.io/dockercfg,type!=kubernetes.io/service-account-token,type!=helm.sh/release.v1
             - --web.enable-tls=true
             - --web.cert-file=/cert/cert
@@ -110,3 +112,4 @@ spec:
           type: RuntimeDefault
       serviceAccountName: promstack-operator
       automountServiceAccountToken: true
+      terminationGracePeriodSeconds: 30

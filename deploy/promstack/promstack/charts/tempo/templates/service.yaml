@@ -6,17 +6,14 @@ metadata:
   name: promstack-tempo
   namespace: monitoring
   labels:
-    helm.sh/chart: tempo-1.10.3
+    helm.sh/chart: tempo-1.18.3
     app.kubernetes.io/name: tempo
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "2.5.0"
+    app.kubernetes.io/version: "2.7.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
-  ports:
-  - name: tempo-prom-metrics
-    port: 3100
-    targetPort: 3100
+  ports:  
   - name: tempo-jaeger-thrift-compact
     port: 6831
     protocol: UDP
@@ -24,7 +21,11 @@ spec:
   - name: tempo-jaeger-thrift-binary
     port: 6832
     protocol: UDP
-    targetPort: 6832
+    targetPort: 6832  
+  - name: tempo-prom-metrics
+    port: 3100
+    protocol: TCP
+    targetPort: 3100
   - name: tempo-jaeger-thrift-http
     port: 14268
     protocol: TCP
@@ -44,7 +45,7 @@ spec:
   - name: tempo-otlp-http-legacy
     port: 55681
     protocol: TCP
-    targetPort: 4318
+    targetPort: 55681
   - name: grpc-tempo-otlp
     port: 4317
     protocol: TCP

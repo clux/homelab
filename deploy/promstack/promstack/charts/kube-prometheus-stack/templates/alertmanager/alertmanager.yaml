@@ -10,14 +10,14 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "64.0.0"
+    app.kubernetes.io/version: "69.8.2"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-64.0.0
+    chart: kube-prometheus-stack-69.8.2
     release: "promstack"
     heritage: "Helm"
 spec:
-  image: "quay.io/prometheus/alertmanager:v0.27.0"
-  version: v0.27.0
+  image: "quay.io/prometheus/alertmanager:v0.28.1"
+  version: v0.28.1
   replicas: 1
   listenLocal: false
   serviceAccountName: promstack-alertmanager
@@ -41,4 +41,14 @@ spec:
     runAsUser: 1000
     seccompProfile:
       type: RuntimeDefault
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchExpressions:
+              - {key: app.kubernetes.io/name, operator: In, values: [alertmanager]}
+              - {key: alertmanager, operator: In, values: [promstack]}
   portName: http-web

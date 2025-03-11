@@ -6,13 +6,13 @@ metadata:
   name: promstack-kube-state-metrics-customresourcestate-config
   namespace: monitoring
   labels:    
-    helm.sh/chart: kube-state-metrics-5.25.1
+    helm.sh/chart: kube-state-metrics-5.30.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: metrics
     app.kubernetes.io/part-of: kube-state-metrics
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "2.13.0"
+    app.kubernetes.io/version: "2.15.0"
     release: promstack
 data:
   config.yaml: |
@@ -22,7 +22,7 @@ data:
           group: kustomize.toolkit.fluxcd.io
           kind: Kustomization
           version: v1
-        metricNamePrefix: gotk2
+        metricNamePrefix: gotk
         metrics:
         - each:
             info:
@@ -33,6 +33,17 @@ data:
             type: Info
           help: The current state of a Flux Kustomization resource.
           labelsFromPath:
+            cx_path:
+            - metadata
+            - annotations
+            - cx.dashboards/path
+            cx_repo:
+            - metadata
+            - annotations
+            - cx.dashboards/repo
+            exported_namespace:
+            - metadata
+            - namespace
             ready:
             - status
             - conditions
@@ -53,7 +64,7 @@ data:
           group: source.toolkit.fluxcd.io
           kind: GitRepository
           version: v1
-        metricNamePrefix: gotk3
+        metricNamePrefix: gotk
         metrics:
         - each:
             info:
@@ -64,6 +75,59 @@ data:
             type: Info
           help: The current state of a Flux GitRepository resource.
           labelsFromPath:
+            cx_path:
+            - metadata
+            - annotations
+            - cx.dashboards/path
+            cx_repo:
+            - metadata
+            - annotations
+            - cx.dashboards/repo
+            exported_namespace:
+            - metadata
+            - namespace
+            ready:
+            - status
+            - conditions
+            - '[type=Ready]'
+            - status
+            revision:
+            - status
+            - artifact
+            - revision
+            suspended:
+            - spec
+            - suspend
+            url:
+            - spec
+            - url
+          name: resource_info
+      - groupVersionKind:
+          group: source.toolkit.fluxcd.io
+          kind: OCIRepository
+          version: v1beta2
+        metricNamePrefix: gotk
+        metrics:
+        - each:
+            info:
+              labelsFromPath:
+                name:
+                - metadata
+                - name
+            type: Info
+          help: The current state of a Flux OCIRepository resource.
+          labelsFromPath:
+            cx_path:
+            - metadata
+            - annotations
+            - cx.dashboards/path
+            cx_repo:
+            - metadata
+            - annotations
+            - cx.dashboards/repo
+            exported_namespace:
+            - metadata
+            - namespace
             ready:
             - status
             - conditions
