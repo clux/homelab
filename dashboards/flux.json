@@ -884,15 +884,6 @@
             },
             "properties": [
               {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Link to Revision",
-                    "url": "${__data.fields.cx_repo}/blob/${__data.fields.sha}/${__data.fields.cx_path}"
-                  }
-                ]
-              },
-              {
                 "id": "custom.width",
                 "value": 150
               }
@@ -1168,12 +1159,7 @@
             "properties": [
               {
                 "id": "links",
-                "value": [
-                  {
-                    "title": "Link to Revision",
-                    "url": "${__data.fields.cx_repo}/blob/${__data.fields.sha}/${__data.fields.cx_path}"
-                  }
-                ]
+                "value": []
               },
               {
                 "id": "custom.width",
@@ -1943,8 +1929,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2070,8 +2055,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "dark-red",
-                    "value": null
+                    "color": "dark-red"
                   },
                   {
                     "color": "red",
@@ -2182,8 +2166,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2319,8 +2302,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2455,6 +2437,6 @@
   "timezone": "",
   "title": "CX / Flux",
   "uid": "cx-flux",
-  "version": 7,
+  "version": 10,
   "weekStart": ""
 }
