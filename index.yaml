@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   cx-dashboards:
   - apiVersion: v2
+    created: "2025-03-17T16:29:09.121382157Z"
+    description: cx dashboard configmaps
+    digest: 11c5180d01acece38956fac8ec88677fbdefd925f642bbe003c607f355b34531
+    name: cx-dashboards
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/cx-dashboards-0.2.3/cx-dashboards-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
     created: "2025-03-12T20:07:14.717069074Z"
     description: cx dashboard configmaps
     digest: 45f66cf8ed862fe42e6f9d7444ded8acaea51ca1c61f11b988a3665c44527b86
@@ -273,4 +282,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-12T20:07:14.717114018Z"
+generated: "2025-03-17T16:29:09.121514364Z"
