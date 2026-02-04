@@ -6,12 +6,12 @@ metadata:
   name: forgejo-inline-config
   namespace: "forgejo"
   labels:
-    helm.sh/chart: forgejo-10.0.1
+    helm.sh/chart: forgejo-16.0.2
     app: forgejo
     app.kubernetes.io/name: forgejo
     app.kubernetes.io/instance: forgejo
-    app.kubernetes.io/version: "9.0.1"
-    version: "9.0.1"
+    app.kubernetes.io/version: "14.0.2"
+    version: "14.0.2"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
@@ -21,13 +21,8 @@ stringData:
   cache: |-
     ADAPTER=memory
     HOST=
-  database: |-
-    DB_TYPE=postgres
-    HOST=forgejo-postgresql.forgejo.svc.cluster.local:5432
-    NAME=gitea
-    PASSWD=gitea
-    USER=gitea
-  indexer: ISSUE_INDEXER_TYPE=db
+  database: DB_TYPE=sqlite3
+  indexer: REPO_INDEXER_ENABLED=false
   metrics: ENABLED=true
   queue: |-
     CONN_STR=
@@ -66,13 +61,14 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: forgejo
+  namespace: "forgejo"
   labels:
-    helm.sh/chart: forgejo-10.0.1
+    helm.sh/chart: forgejo-16.0.2
     app: forgejo
     app.kubernetes.io/name: forgejo
     app.kubernetes.io/instance: forgejo
-    app.kubernetes.io/version: "9.0.1"
-    version: "9.0.1"
+    app.kubernetes.io/version: "14.0.2"
+    version: "14.0.2"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
@@ -113,15 +109,18 @@ stringData:
 
       env2ini::log "    + '${setting}'"
 
+      local masked_setting="${setting//./_0X2E_}"                           # '//' instructs to replace all matches
+      masked_setting="${masked_setting//-/_0X2D_}"
+
       if [[ -z "${section}" ]]; then
-        export "FORGEJO____${setting^^}=${value}"                           # '^^' makes the variable content uppercase
+        export "FORGEJO____${masked_setting^^}=${value}"                           # '^^' makes the variable content uppercase
         return
       fi
 
       local masked_section="${section//./_0X2E_}"                           # '//' instructs to replace all matches
       masked_section="${masked_section//-/_0X2D_}"
 
-      export "FORGEJO__${masked_section^^}__${setting^^}=${value}"          # '^^' makes the variable content uppercase
+      export "FORGEJO__${masked_section^^}__${masked_setting^^}=${value}"          # '^^' makes the variable content uppercase
     }
 
     function env2ini::reload_preset_envs() {

@@ -7,12 +7,12 @@ metadata:
   namespace: "forgejo"
   annotations:
   labels:
-    helm.sh/chart: forgejo-10.0.1
+    helm.sh/chart: forgejo-16.0.2
     app: forgejo
     app.kubernetes.io/name: forgejo
     app.kubernetes.io/instance: forgejo
-    app.kubernetes.io/version: "9.0.1"
-    version: "9.0.1"
+    app.kubernetes.io/version: "14.0.2"
+    version: "14.0.2"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -25,14 +25,14 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: ae29278c2f18b920090950e90caafe33ea4a65bf12e3562e7d9de8e986204df2
+        checksum/config: 122b7a2c8766f37ab85acdf73daebb64c9a2075bc88df22a2c0bf7be8d94a937
       labels:
-        helm.sh/chart: forgejo-10.0.1
+        helm.sh/chart: forgejo-16.0.2
         app: forgejo
         app.kubernetes.io/name: forgejo
         app.kubernetes.io/instance: forgejo
-        app.kubernetes.io/version: "9.0.1"
-        version: "9.0.1"
+        app.kubernetes.io/version: "14.0.2"
+        version: "14.0.2"
         app.kubernetes.io/managed-by: Helm
     spec:
       
@@ -40,7 +40,7 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: init-directories
-          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          image: "code.forgejo.org/forgejo/forgejo:14.0.2-rootless"
           imagePullPolicy: IfNotPresent
           command: ["/usr/sbin/init_directory_structure.sh"]
           env:
@@ -68,7 +68,7 @@ spec:
               cpu: 100m
               memory: 128Mi
         - name: init-app-ini
-          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          image: "code.forgejo.org/forgejo/forgejo:14.0.2-rootless"
           imagePullPolicy: IfNotPresent
           command: ["/usr/sbin/config_environment.sh"]
           env:
@@ -98,7 +98,7 @@ spec:
               cpu: 100m
               memory: 128Mi
         - name: configure-gitea
-          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          image: "code.forgejo.org/forgejo/forgejo:14.0.2-rootless"
           command: ["/usr/sbin/configure_gitea.sh"]
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -142,7 +142,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: forgejo
-          image: "code.forgejo.org/forgejo/forgejo:9.0.1-rootless"
+          image: "code.forgejo.org/forgejo/forgejo:14.0.2-rootless"
           imagePullPolicy: IfNotPresent
           env:
             # SSH Port values have to be set here as well for openssh configuration
@@ -177,11 +177,12 @@ spec:
             timeoutSeconds: 1
           readinessProbe:
             failureThreshold: 3
+            httpGet:
+              path: /api/healthz
+              port: http
             initialDelaySeconds: 5
             periodSeconds: 10
             successThreshold: 1
-            tcpSocket:
-              port: http
             timeoutSeconds: 1
           resources:
             {}

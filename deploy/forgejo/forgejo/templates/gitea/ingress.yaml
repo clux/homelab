@@ -6,12 +6,12 @@ metadata:
   name: forgejo
   namespace: "forgejo"
   labels:
-    helm.sh/chart: forgejo-10.0.1
+    helm.sh/chart: forgejo-16.0.2
     app: forgejo
     app.kubernetes.io/name: forgejo
     app.kubernetes.io/instance: forgejo
-    app.kubernetes.io/version: "9.0.1"
-    version: "9.0.1"
+    app.kubernetes.io/version: "14.0.2"
+    version: "14.0.2"
     app.kubernetes.io/managed-by: Helm
   annotations:
 spec:
@@ -29,4 +29,4 @@ spec:
               service:
                 name: forgejo-http
                 port:
-                  number: 3000
+                  name: http
