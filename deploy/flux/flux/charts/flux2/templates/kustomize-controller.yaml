@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/component: kustomize-controller
     app.kubernetes.io/instance: "flux"
     app.kubernetes.io/managed-by: "Helm"
-    app.kubernetes.io/version: "2.3.0"
+    app.kubernetes.io/version: "2.5.1"
     app.kubernetes.io/part-of: flux
-    helm.sh/chart: flux2-2.13.0
+    helm.sh/chart: flux2-2.15.0
     control-plane: controller
   name: kustomize-controller
 spec:
@@ -19,6 +19,9 @@ spec:
       app: kustomize-controller
   template:
     metadata:
+      annotations: 
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
       labels:
         app: kustomize-controller
 
@@ -36,7 +39,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/kustomize-controller:v1.3.0
+        image: ghcr.io/fluxcd/kustomize-controller:v1.5.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
