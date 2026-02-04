@@ -33,7 +33,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: renovate
-              image: "ghcr.io/clux/renovate:37.440.7-slim3"
+              image: "ghcr.io/clux/renovate:43.3.1"
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: config-volume
@@ -71,3 +71,4 @@ spec:
           securityContext:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
+            runAsUser: 1000

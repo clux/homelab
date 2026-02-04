@@ -28,7 +28,7 @@ data:
        "printConfig": true,
        "dependencyDashboard": false,
        "platformCommit": false,
-       "repositories": ["clux/renovate"],
+       "repositories": ["clux/renovate", "clux/muslrust"],
        "enabledManagers": ["helmv3", "custom.regex", "dockerfile"],
        "packageRules": [{"matchManagers": ["helmv3"], "rangeStrategy": "pin"}],
        "customManagers": []
