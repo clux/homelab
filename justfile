@@ -133,6 +133,8 @@ init-helm:
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
   helm repo add fluxcd-community https://fluxcd-community.github.io/helm-charts
   helm repo add renovate https://docs.renovatebot.com/helm-charts
+  helm repo add coredns https://coredns.github.io/helm
+  helm repo add cilium https://helm.cilium.io/
 
 [private, confirm("Recreate flux secret?")] # single-setup flux with a GITHUB_TOKEN on env
 init-flux:
