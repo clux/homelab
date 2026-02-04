@@ -10,15 +10,22 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
 spec:
   groups:
   - name: k8s.rules.container_cpu_usage_seconds_total
     rules:
+    - expr: |-
+        sum by (cluster, namespace, pod, container) (
+          rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}[5m])
+        ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
+          1, max by (cluster, namespace, pod, node) (kube_pod_info{node!=""})
+        )
+      record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m
     - expr: |-
         sum by (cluster, namespace, pod, container) (
           irate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}[5m])

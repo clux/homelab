@@ -8,9 +8,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
     app: promstack-operator
@@ -34,10 +34,15 @@ rules:
   - thanosrulers/finalizers
   - thanosrulers/status
   - scrapeconfigs
+  - scrapeconfigs/status
   - servicemonitors
+  - servicemonitors/status
   - podmonitors
+  - podmonitors/status
   - probes
+  - probes/status
   - prometheusrules
+  - prometheusrules/status
   verbs:
   - '*'
 - apiGroups:
@@ -88,6 +93,7 @@ rules:
   - watch
 - apiGroups:
   - ""
+  - events.k8s.io
   resources:
   - events
   verbs:
@@ -107,3 +113,14 @@ rules:
   - storageclasses
   verbs:
   - get
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - create
+  - list
+  - watch
+  - update
+  - delete

@@ -9,14 +9,15 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
 rules:
-# This permission are not in the kube-prometheus repo
-# they're grabbed from https://github.com/prometheus/prometheus/blob/master/documentation/examples/rbac-setup.yml
+# These permissions (to examine all namespaces) are not in the kube-prometheus repo.
+# They're grabbed from https://github.com/prometheus/prometheus/blob/master/documentation/examples/rbac-setup.yml
+# kube-prometheus deliberately defaults to a more restrictive setup that is not appropriate for our general audience.
 - apiGroups: [""]
   resources:
   - nodes

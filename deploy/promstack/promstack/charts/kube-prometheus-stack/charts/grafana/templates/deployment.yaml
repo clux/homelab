@@ -6,10 +6,10 @@ metadata:
   name: promstack-grafana
   namespace: monitoring
   labels:
-    helm.sh/chart: grafana-8.10.1
+    helm.sh/chart: grafana-10.5.15
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "11.5.2"
+    app.kubernetes.io/version: "12.3.1"
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -22,12 +22,12 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: grafana-8.10.1
+        helm.sh/chart: grafana-10.5.15
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: promstack
-        app.kubernetes.io/version: "11.5.2"
+        app.kubernetes.io/version: "12.3.1"
       annotations:
-        checksum/config: 2c4bea1817dea46e172fd113c8d9c5eb7146e6b118f9ef14dbc86bd70fd756a3
+        checksum/config: 99dd548175c6cfafc2b6f9f75ae72aaba33316f3d0ba187628464170a1f179c9
         checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
         checksum/secret: 032056e9c62bbe9d1daa41ee49cd3d9524c076f51ca4c65adadf4ef08ef28712
         kubectl.kubernetes.io/default-container: grafana
@@ -44,7 +44,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: grafana-sc-dashboard
-          image: "quay.io/kiwigrid/k8s-sidecar:1.30.0"
+          image: "quay.io/kiwigrid/k8s-sidecar:2.5.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: METHOD
@@ -84,13 +84,14 @@ spec:
             - name: sc-dashboard-volume
               mountPath: "/tmp/dashboards"
         - name: grafana
-          image: "docker.io/grafana/grafana:11.5.2"
+          image: "docker.io/grafana/grafana:12.3.1"
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
               - ALL
+            privileged: false
             seccompProfile:
               type: RuntimeDefault
           volumeMounts:
@@ -99,6 +100,8 @@ spec:
               subPath: grafana.ini
             - name: storage
               mountPath: "/var/lib/grafana"
+            - name: search
+              mountPath: "/var/lib/grafana-search"
             - name: config
               mountPath: "/etc/grafana/provisioning/datasources/datasources.yaml"
               subPath: "datasources.yaml"
@@ -143,26 +146,29 @@ spec:
               value: /var/lib/grafana/plugins
             - name: GF_PATHS_PROVISIONING
               value: /etc/grafana/provisioning
+            - name: GF_UNIFIED_STORAGE_INDEX_PATH
+              value: /var/lib/grafana-search/bleve
           livenessProbe:
             failureThreshold: 10
             httpGet:
               path: /api/health
-              port: 3000
+              port: grafana
             initialDelaySeconds: 60
             timeoutSeconds: 30
           readinessProbe:
             httpGet:
               path: /api/health
-              port: 3000
+              port: grafana
       volumes:
         - name: config
           configMap:
             name: promstack-grafana
         - name: storage
           emptyDir: {}
+        - name: search
+          emptyDir: {}
         - name: sc-dashboard-volume
-          emptyDir:
-            {}
+          emptyDir: {}
         - name: sc-dashboard-provider
           configMap:
             name: promstack-grafana-config-dashboards

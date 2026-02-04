@@ -10,9 +10,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
 spec:
@@ -24,20 +24,25 @@ spec:
         port: http-web
         pathPrefix: "/"
         apiVersion: v2
-  image: "quay.io/prometheus/prometheus:v3.2.1"
-  version: v3.2.1
+  image: "quay.io/prometheus/prometheus:v3.9.1"
+  imagePullPolicy: "IfNotPresent"
+  version: v3.9.1
+  externalLabels:
+    external_domain: clux.dev
   prometheusExternalLabelName: ""
   replicaExternalLabelName: ""
   externalUrl: "http://prometheus.clux.dev"
   paused: false
   replicas: 1
   shards: 1
-  logLevel:  debug
+  logLevel:  "debug"
   logFormat:  logfmt
   listenLocal: false
+  enableOTLPReceiver: false
   enableAdminAPI: true
   enableFeatures:
   - exemplar-storage
+  - native-histograms
   scrapeInterval: 60s
   evaluationInterval: 60s
   retention: "30d"
@@ -64,10 +69,7 @@ spec:
       type: RuntimeDefault
   ruleNamespaceSelector: {}
   ruleSelector: {}
-  scrapeConfigSelector:
-    matchLabels:
-      release: "promstack"
-
+  scrapeConfigSelector: {}
   scrapeConfigNamespaceSelector: {}
   storage:
     volumeClaimTemplate:
@@ -85,8 +87,9 @@ spec:
         podAffinityTerm:
           topologyKey: kubernetes.io/hostname
           labelSelector:
-            matchExpressions:
-              - {key: app.kubernetes.io/name, operator: In, values: [prometheus]}
-              - {key: prometheus, operator: In, values: [promstack]}
+            matchExpressions:            
+            - {key: app.kubernetes.io/name, operator: In, values: [prometheus]}
+            - {key: app.kubernetes.io/instance, operator: In, values: [promstack]}
   portName: http-web
   hostNetwork: false
+  serviceDiscoveryRole: EndpointSlice

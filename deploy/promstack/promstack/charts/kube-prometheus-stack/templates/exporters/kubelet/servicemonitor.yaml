@@ -9,9 +9,9 @@ metadata:
     app: promstack-kubelet    
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
 spec:
@@ -28,7 +28,8 @@ spec:
       k8s-app: kubelet
   endpoints:
   - port: https-metrics
-    scheme: https    
+    scheme: https
+    interval: 60s    
     tlsConfig:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       insecureSkipVerify: true
@@ -68,7 +69,7 @@ spec:
   - port: https-metrics
     scheme: https
     path: /metrics/cadvisor
-    interval: 10s
+    interval: 60s
     honorLabels: true
     honorTimestamps: true
     trackTimestampsStaleness: true    

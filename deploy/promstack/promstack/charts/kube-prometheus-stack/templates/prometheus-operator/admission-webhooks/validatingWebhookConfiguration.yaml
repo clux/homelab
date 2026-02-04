@@ -11,15 +11,15 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "69.8.2"
+    app.kubernetes.io/version: "81.5.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-69.8.2
+    chart: kube-prometheus-stack-81.5.0
     release: "promstack"
     heritage: "Helm"
     app.kubernetes.io/name: promstack-prometheus-operator
     app.kubernetes.io/component: prometheus-operator-webhook
 webhooks:
-  - name: prometheusrulemutate.monitoring.coreos.com
+  - name: prometheusrulevalidate.monitoring.coreos.com
     failurePolicy: Ignore
     rules:
       - apiGroups:
@@ -36,6 +36,26 @@ webhooks:
         namespace: monitoring
         name: promstack-operator
         path: /admission-prometheusrules/validate
+    timeoutSeconds: 10
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+  - name: alertmanagerconfigsvalidate.monitoring.coreos.com
+    failurePolicy: Ignore
+    rules:
+      - apiGroups:
+          - monitoring.coreos.com
+        apiVersions:
+          - v1alpha1
+        resources:
+          - alertmanagerconfigs
+        operations:
+          - CREATE
+          - UPDATE
+    clientConfig:
+      service:
+        namespace: monitoring
+        name: promstack-operator
+        path: /admission-alertmanagerconfigs/validate
     timeoutSeconds: 10
     admissionReviewVersions: ["v1", "v1beta1"]
     sideEffects: None
