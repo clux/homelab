@@ -48,12 +48,11 @@ flannel-backend: none
 ```
 
 ## Cluster Bootstrap
-Create the `k3s` cluster. Then fetch helm dependencies and prepare the cluster for a mass yaml application.
-
-then `sudo systemctl restart k3s.service` and start applying some yaml when the cluster comes up:
+Given a fresh `k3s` cluster, apply the crds and network stack, inject the config above, and restart `k3s.service`
 
 ```sh
 just crds # apply crds folder
 just network # install coredns and cilium
 ```
-We prefer to be careful with the core configuration, so we leave bootstrap configuration (flux repos + namespaces) to be done via `kubectl apply` of the `bootstrap` directory.
+
+Then flux based applications can be `kubectl apply`'d from the [bootstrap](./bootstrap) directory.
