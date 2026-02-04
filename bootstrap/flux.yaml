@@ -31,5 +31,5 @@ kind: Namespace
 metadata:
   labels:
     pod-security.kubernetes.io/enforce: baseline
-    pod-security.kubernetes.io/enforce-version: v1.31
+    pod-security.kubernetes.io/enforce-version: v1.33
   name: flux
