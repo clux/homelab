@@ -1,5 +1,33 @@
 apiVersion: v1
 entries:
+  cilium:
+  - apiVersion: v2
+    created: "2026-02-04T19:25:09.111900487Z"
+    dependencies:
+    - name: cilium
+      repository: https://helm.cilium.io/
+      version: '*'
+    description: wrapper over cilium
+    digest: 4d0ea1b75bd3a6bd5c0d8ee491fa3dbd2ad0b111b1c5d63e7ae3609c6e97ebc4
+    name: cilium
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/cilium-0.2.0/cilium-0.2.0.tgz
+    version: 0.2.0
+  coredns:
+  - apiVersion: v2
+    created: "2026-02-04T19:25:09.28612456Z"
+    dependencies:
+    - name: coredns
+      repository: https://coredns.github.io/helm
+      version: '*'
+    description: wrapper over coredns
+    digest: dd3ecea359d58393f04a4ae5c465316eba95245d472e528073b66afc6509efb3
+    name: coredns
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/coredns-0.2.0/coredns-0.2.0.tgz
+    version: 0.2.0
   cx-dashboards:
   - apiVersion: v2
     created: "2025-03-17T16:29:09.121382157Z"
@@ -282,4 +310,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-17T16:29:09.121514364Z"
+generated: "2026-02-04T19:25:09.286164915Z"
