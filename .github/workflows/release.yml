@@ -53,10 +53,10 @@ jobs:
           if [ -z "${pkg:-}" ]; then
             break
           fi
-          if [ "${pkg}" = "forgejo" ]; then
+          if [ "${pkg}" = "charts/forgejo" ]; then
             break
           fi
-          if [ "${pkg}" = "cilium" ]; then
+          if [ "${pkg}" = "charts/cilium" ]; then
             break
           fi
           helm push "${pkg}" oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts
