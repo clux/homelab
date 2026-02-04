@@ -1,0 +1,77 @@
+# global
+
+# Note that coredns is default enabled in k3s as an addon.
+# https://docs.k3s.io/installation/packaged-components
+# Try to remove it either via
+# 1. --disable=coredns as an k3s argument
+# 2. in /etc/rancher/k3s/config.yaml
+# https://docs.k3s.io/networking/networking-services#coredns
+
+# main chart values
+# https://github.com/coredns/helm/blob/master/charts/coredns/values.yaml
+coredns:
+  # Default zone is what Kubernetes recommends:
+  # https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
+  # Preserve NodeHosts from zonefiles (part of k3s's volume from the coredns 'config-volume')
+  zoneFiles:
+  - filename: NodeHosts
+    contents: |
+      192.168.1.40 homelab
+  # The only thing we change from upstream here is the forward param
+  servers:
+  - zones:
+    - zone: .
+      use_tcp: true
+    port: 53
+    # -- expose the service on a different port
+    # servicePort: 5353
+    # If serviceType is nodePort you can specify nodePort here
+    # nodePort: 30053
+    # hostPort: 53
+    plugins:
+    - name: errors
+    # Serves a /health endpoint on :8080, required for livenessProbe
+    - name: health
+      configBlock: |-
+        lameduck 10s
+    # Serves a /ready endpoint on :8181, required for readinessProbe
+    - name: ready
+    # Required to query kubernetes API for data
+    - name: kubernetes
+      parameters: cluster.local in-addr.arpa ip6.arpa
+      configBlock: |-
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+    # ADDED: thing that was on k3s coredns. Presumably from the nodehosts zonefile.
+    - name: hosts
+      parameters: /etc/coredns/NodeHosts
+      configBlock: |-
+        ttl 60
+        reload 15s
+        fallthrough
+    # Serves a /metrics endpoint on :9153, required for serviceMonitor
+    - name: prometheus
+      parameters: 0.0.0.0:9153
+    - name: forward
+      # OVERRIDE:
+      parameters: . 192.168.1.1
+      # DEFAULT:
+      #parameters: . /etc/resolv.conf
+    - name: cache
+      parameters: 30
+    - name: loop
+    - name: reload
+    - name: loadbalance
+  # It's possible all the custom stuff here is unnecessary and can be removed
+  prometheus:
+    monitor:
+      enabled: true
+      namespace: kube-system
+      interval: 30s
+
+  # DNS DOES NOT WORK WITHOUT THIS. WHY?
+  # presumably it needs to be within the k3s service cidr range which is 10.43.0.0/16
+  service:
+    clusterIP: 10.43.0.10
+    clusterIPs: [10.43.0.10]

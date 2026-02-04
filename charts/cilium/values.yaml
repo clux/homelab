@@ -1,0 +1,79 @@
+# global
+
+# Upstream values templated from this file:
+# https://github.com/cilium/cilium/blob/main/install/kubernetes/cilium/values.yaml.tmpl
+# https://docs.cilium.io/en/stable/helm-reference/ (worse)
+# values inspired by https://docs.cilium.io/en/stable/installation/k3s/
+# https://docs.cilium.io/en/stable/installation/k8s-install-helm/
+cilium:
+  # API-SERVER CONTACT POINT (main node and the default service port)
+  k8sServiceHost: 192.168.1.40
+  k8sServicePort: 6443
+  ipv4:
+    enabled: true
+  ipv6:
+    enabled: false
+  ipam:
+    mode: cluster-pool
+    operator:
+      clusterPoolIPv4PodCIDRList: "10.42.0.0/24"
+      clusterPoolIPv4MaskSize: 24
+  kubeProxyReplacement: true # while we test
+  dnsPolicy: ClusterFirst
+  agent: true
+  operator:
+    replicas: 1
+    enabled: true
+  # dashboards:
+    # enabled: true
+  l2announcements:
+    # https://isovalent.com/blog/post/migrating-from-metallb-to-cilium/#l2-announcement-with-arp
+    enable: true
+  # gatewayAPI:
+    # https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/
+    # enabled: true
+    # gatewayClass:
+      # create: 'true'
+  hubble:
+    enabled: true
+    # peerService:
+      # NB: Cannot add extra dot here as in recommended in https://github.com/cilium/cilium/issues/31898
+      # because then you get two dots in the relay configmap https://github.com/cilium/cilium/blob/main/install/kubernetes/cilium/templates/hubble-relay/configmap.yaml#L24C101-L24C114
+      # clusterDomain: cluster.local.
+    metrics:
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+      # enableOpenMetrics: true
+      enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - httpV2:exemplars=true
+      - labelsContext=source_ip
+      - source_namespace
+      - source_workload
+      - destination_ip
+      - destination_namespace
+      - destination_workload
+      - traffic_direction
+      dashboards:
+        namespace: monitoring
+        enabled: true
+    relay:
+      enabled: true
+    ui:
+      enabled: true
+      ingress:
+        enabled: true
+        # annotations: {}
+        # className: ""
+        hosts:
+        - hubble.clux.dev
+        tls:
+        - secretName: hubble-tls
+          hosts:
+          - hubble.clux.dev

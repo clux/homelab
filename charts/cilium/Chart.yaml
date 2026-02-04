@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cilium
+description: wrapper over cilium
+type: application
+version: 0.2.0
+dependencies:
+- name: cilium
+  version: "*"
+  repository: https://helm.cilium.io/

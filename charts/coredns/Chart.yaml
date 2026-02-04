@@ -1,0 +1,9 @@
+apiVersion: v2
+name: coredns
+description: wrapper over coredns
+type: application
+version: 0.2.0
+dependencies:
+- name: coredns
+  version: "*"
+  repository: https://coredns.github.io/helm

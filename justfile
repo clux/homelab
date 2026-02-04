@@ -20,9 +20,21 @@ crds: # idempotent apply, should be done if changes in folder after gen-crds
 bootstrap:
   kubectl apply -f bootstrap/ -R --force-conflicts --server-side
 
+[group('manual'), confirm("apply network stack to current context?"), doc('apply network configuration manually')]
+network:
+  kubectl apply -f deploy/coredns/ -R -n kube-system --server-side
+  kubectl apply -f deploy/cilium/ -R --server-side
+
 [group('manual'), doc('manual update chart dependencies for a given chart folder')]
 update chart:
+  #!/usr/bin/env bash
+  set -euxo pipefail
   (cd ./charts/{{chart}} && sd '  version: .*' '  version: "*"' Chart.yaml && helm dependency update)
+  # update chart's .version so we keep it in sync (chart releasing requires a bump)
+  # this assumes the first subchart is the version we care about
+  mainver="$(lq '.dependencies[0].version' charts/{{chart}}/Chart.lock -r)"
+  # some charts like forgejo uses oci which cannot be pinned atm so skip; maybe with helm 4
+  [ "${mainver}" != "null" ] && lq -y -i ".version=\"${mainver}\"" charts/{{chart}}/Chart.yaml
   git add charts/{{chart}}
   just gen-{{chart}}
   git add deploy/{{chart}}
