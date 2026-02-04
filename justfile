@@ -79,6 +79,16 @@ gen-forgejo:
   rm -rf deploy/forgejo
   helm template forgejo -f ./charts/forgejo/values.yaml oci://code.forgejo.org/forgejo-helm/forgejo -n forgejo --skip-tests --output-dir deploy/forgejo
 
+[group('gen'), doc('generate cilium from charts')]
+gen-cilium:
+  rm -rf deploy/cilium
+  helm template cilium ./charts/cilium -n kube-system --skip-tests --output-dir deploy/cilium
+
+[group('gen'), doc('generate coredns from charts')]
+gen-coredns:
+  rm -rf deploy/coredns
+  helm template coredns ./charts/coredns -n kube-system --skip-tests --output-dir deploy/coredns
+
 [group('gen'), doc('generate crds (run AFTER gen-prom)')]
 gen-crds:
   #!/usr/bin/env bash
