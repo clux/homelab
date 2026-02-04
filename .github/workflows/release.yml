@@ -56,5 +56,8 @@ jobs:
           if [ "${pkg}" = "forgejo" ]; then
             break
           fi
+          if [ "${pkg}" = "cilium" ]; then
+            break
+          fi
           helm push "${pkg}" oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts
         done
