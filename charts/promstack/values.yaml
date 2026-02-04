@@ -19,10 +19,7 @@ kube-prometheus-stack:
       k8sContainerMemorySwap: false # dropped container_memory_swap
       k8sContainerMemoryCache: true # used in node compute dashboard
       k8sPodOwner: true # used in good dashboards
-      kubeApiserver: false
-      kubeApiserverAvailability: false
-      kubeApiserverError: false
-      kubeApiserverSlos: false
+      kubeApiserver: false # disable ALL apiserver stuff
       kubeControllerManager: false
       kubelet: false # dumb pleg rules
       kubePrometheusGeneral: false # not using up1 / up0 anyway
@@ -153,6 +150,7 @@ kube-prometheus-stack:
   kubelet:
     enabled: true
     serviceMonitor:
+      interval: 60s
       # we want cadvisor (cpu/memory) metrics only
       probes: false
       cAdvisor: true
@@ -409,6 +407,9 @@ kube-prometheus-stack:
   ## Manages Prometheus and Alertmanager components
   prometheusOperator:
     enabled: true
+    # use new-non deprecated endpoints for discovery (needs similar flag for prometheusSpec)
+    kubeletEndpointsEnabled: false
+    kubeletEndpointSliceEnabled: true
 
     ## If true, the operator will create and maintain a service for scraping kubelets
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/helm/prometheus-operator/README.md
@@ -455,8 +456,10 @@ kube-prometheus-stack:
       enableAdminAPI: true
       enableFeatures:
       - exemplar-storage
-      #- extra-scrape-metrics
-      #- native-histograms
+      #- extra-scrape-metrics # only kind of useful
+      - native-histograms # seems to kill KSM metrics
+      #- created-timestamp-zero-ingestion # crashes prom
+      #- old-ui # actually better still, but w/e
       # disabled RW as not using tempo metrics generator
       enableRemoteWriteReceiver: false
       retention: 30d
@@ -472,6 +475,7 @@ kube-prometheus-stack:
       scrapeInterval: 60s
       evaluationInterval: 60s
       replicas: 1
+      serviceDiscoveryRole: EndpointSlice
       # no operator enrichment
       prometheusExternalLabelNameClear: true
       replicaExternalLabelNameClear: true
@@ -479,10 +483,11 @@ kube-prometheus-stack:
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       ruleSelectorNilUsesHelmValues: false
+      scrapeConfigSelectorNilUsesHelmValues: false
   cleanPrometheusOperatorObjectNames: true
 
 tempo:
-  enabled: true
+  enabled: false
   replicas: 1
   tempo:
     retention: 48h

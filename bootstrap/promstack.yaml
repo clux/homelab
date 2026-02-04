@@ -30,10 +30,10 @@ spec:
     kind: StatefulSet
     name: alertmanager-promstack
     namespace: monitoring
-  - apiVersion: apps/v1
-    kind: StatefulSet
-    name: promstack-tempo
-    namespace: monitoring
+  # - apiVersion: apps/v1
+    # kind: StatefulSet
+    # name: promstack-tempo
+    # namespace: monitoring
   - apiVersion: apps/v1
     kind: Deployment
     name: promstack-kube-state-metrics

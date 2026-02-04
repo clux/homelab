@@ -1,5 +1,9 @@
 ---
 # https://code.forgejo.org/forgejo-helm/forgejo-helm/src/branch/main/values.yaml
+# See https://code.forgejo.org/forgejo-helm/forgejo-helm#upgrading
+# on forgejo 11 atm (LTS)
+# https://forgejo.org/2025-04-release-v11-0/ supported until july 2026
+# > Long term support (LTS) (the version published the first quarter of every year): receives only critical bugfixes and security support for one year and three months.
 gitea:
   # https://forgejo.org/docs/latest/admin/config-cheat-sheet/
   config:
@@ -25,6 +29,10 @@ gitea:
       DEFAULT_REPO_UNITS: "repo.code,repo.issues,repo.pulls,repo.actions"
       DEFAULT_MERGE_STYLE: "squash"
       DISABLE_MIGRATIONS: true
+    indexer:
+      # https://forgejo.org/docs/latest/admin/config-cheat-sheet/#indexer-indexer
+      # enable this if we want cross-repo search with elastic/bleve
+      REPO_INDEXER_ENABLED: false
   admin:
     passwordMode: initialOnlyRequireReset
     existingSecret: gitea-admin-secret
@@ -53,6 +61,17 @@ ingress:
     hosts:
     - forgejo.clux.dev
 
+# this doesn't work well yet because the host is hardwired into the config in the chart
+# httpRoute:
+#   enabled: true
+#   hostnames: ["forgejo.clux.dev"]
+#   parentRef:
+#   - name: cilium
+#   tls:
+#     certificateRefs:
+#     - kind: Secret
+#       name: forgejo-tls
+
 service:
   ssh:
     port: 9022
@@ -74,13 +93,45 @@ persistence:
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
 
-redis-cluster:
-  enabled: false
-postgresql-ha:
-  enabled: false
-# https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+
+# chart version 14 disabled bitnami postgres chart by default so we run with default sqlite
+# https://code.forgejo.org/forgejo-helm/forgejo-helm#to-v14
+# our plans fit within the "5+ active users and more than a few dozen repos" warning for sqlite
+
+# alternatively there's at least 3 different postgres operators
+# cloudnative-pg: https://github.com/cloudnative-pg/cloudnative-pg (looks complex)
+# crunchydata: https://github.com/CrunchyData/postgres-operator (multi step major upgrade)
+# zalando: https://github.com/zalando/postgres-operator/ (easiest looking)
+
+# legacy bitnami postgres configuration in case we go back to a full postgres
 postgresql:
-  enabled: true
+  # https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+  # cannot rely upon these anymore because images going away: https://github.com/bitnami/charts/issues/35164
+  # upgrades should probably back up: https://artifacthub.io/packages/helm/bitnami/postgresql#backup-and-restore
+  enabled: false
+  image:
+    # pin version in production
+    # https://artifacthub.io/packages/helm/bitnami/postgresql#rolling-vs-immutable-tags
+    # generally postgres recommends doing dump/restores on major upgrades ala
+    # 16: "A dump/restore using pg_dumpall or use of pg_upgrade or logical replication is required for those wishing to migrate data from any previous release."
+    # whereas minors:
+    # > Minor release upgrades do not require a dump and restore; you simply stop the database server, install the updated binaries, and restart the server. Such upgrades might require additional steps so always read the release notes first.
+    # https://forgejo.org/docs/v11.0/admin/upgrade/#backup
+    # forgejo has very loose reqs on postgres versions: https://forgejo.org/docs/latest/admin/database-preparation/
+    repository: bitnami/postgresql
+    # version 17 supported until november 2029
+    # https://www.postgresql.org/support/versioning/
+    # check after https://www.postgresql.org/docs/release/17.5/ for specific steps. 17.X should be safe.
+    tag: 17.5.0-debian-12-r4
+  metrics:
+    # this works and uses postgres exporter
+    # https://github.com/prometheus-community/postgres_exporter
+    # but don't have a need for it atm
+    # https://github.com/prometheus-community/postgres_exporter/blob/master/postgres_mixin/alerts/postgres.libsonnet
+    # may be useful in the future. dashboard was not good.
+    enabled: false
+    serviceMonitor:
+      enabled: false
   primary:
     pdb:
       create: false

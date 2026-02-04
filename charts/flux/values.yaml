@@ -11,7 +11,9 @@ flux2:
     create: false
   kustomizeController:
     create: true
-    annotations: ~
+    # annotation nulling seems to not work in current helm version
+    # fixed in 4 https://github.com/helm/helm/issues/31118
+    # annotations: ~
     resources:
       limits: {}
       requests:
@@ -25,7 +27,9 @@ flux2:
     # rely on an alert instead
   sourceController:
     create: true
-    annotations: ~
+    # annotation nulling seems to not work in current helm version
+    # fixed in 4 https://github.com/helm/helm/issues/31118
+    # annotations: ~
     resources:
       limits: {}
       requests:

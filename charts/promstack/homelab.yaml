@@ -54,3 +54,5 @@ kube-prometheus-stack:
       - prometheus.clux.dev
     prometheusSpec:
       externalUrl: http://prometheus.clux.dev
+      externalLabels:
+        external_domain: clux.dev

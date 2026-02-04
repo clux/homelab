@@ -1,9 +1,9 @@
 dependencies:
 - name: kube-prometheus-stack
   repository: https://prometheus-community.github.io/helm-charts
-  version: 69.8.2
+  version: 81.5.0
 - name: tempo
   repository: https://grafana.github.io/helm-charts
-  version: 1.18.3
-digest: sha256:fc4576b772a31ee455d47fbaa8034734069c9f94126c3df8d47163ba0b200221
-generated: "2025-03-10T17:33:42.668526115Z"
+  version: 1.24.4
+digest: sha256:4510a5ace352c230b97265367b62cfeff20c5cb5e7883dcfe236d6d3aef75733
+generated: "2026-02-04T18:30:42.954181099Z"

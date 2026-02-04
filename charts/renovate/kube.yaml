@@ -5,6 +5,7 @@ renovate:
   fullnameOverride: 'renovate-kube'
   envFrom:
   # Fine grained, minimal renovate token https://docs.renovatebot.com/modules/platform/github/#running-using-a-fine-grained-token
-  # For kube-rs org via sszynrae. kube-rs org has to approve the PAT.
+  # For kube-rs org via sszynrae. kube-rs org has to approve the PAT first time.
+  # Update it within sszynrae's fine grained on expiry and update the renovate-pat-kube-sszynrae secret.
   - secretRef:
       name: renovate-kube-pat

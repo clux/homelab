@@ -6,6 +6,7 @@ metadata:
   name: traefik
   namespace: monitoring
 spec:
+  convertClassicHistogramsToNHCB: true
   namespaceSelector:
     matchNames:
     - kube-system

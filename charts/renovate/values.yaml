@@ -22,11 +22,12 @@ renovate:
 
   image:
     registry: ghcr.io
-    tag: 37.440.7-slim3
+    tag: 43.3.1
     repository: clux/renovate
 
   securityContext:
     fsGroup: 1000
+    runAsUser: 1000
     fsGroupChangePolicy: OnRootMismatch
 
   # See https://docs.renovatebot.com/self-hosted-configuration

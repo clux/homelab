@@ -18,10 +18,6 @@ spec:
     kind: Deployment
     name: forgejo
     namespace: forgejo
-  - apiVersion: apps/v1
-    kind: StatefulSet
-    name: forgejo-postgresql
-    namespace: forgejo
   sourceRef:
     kind: GitRepository
     name: homelab
