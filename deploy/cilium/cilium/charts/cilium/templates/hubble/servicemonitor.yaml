@@ -1,0 +1,29 @@
+---
+# Source: cilium/charts/cilium/templates/hubble/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hubble
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: hubble
+spec:
+  selector:
+    matchLabels:
+      k8s-app: hubble
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  endpoints:
+  - port: hubble-metrics
+    interval: "30s"
+    honorLabels: true
+    path: /metrics
+    scheme: http
+    relabelings:
+    - action: replace
+      replacement: ${1}
+      sourceLabels:
+      - __meta_kubernetes_pod_node_name
+      targetLabel: node

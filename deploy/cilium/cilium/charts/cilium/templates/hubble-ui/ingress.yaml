@@ -1,0 +1,27 @@
+---
+# Source: cilium/charts/cilium/templates/hubble-ui/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hubble-ui
+  namespace: kube-system
+  labels:
+    k8s-app: hubble-ui
+    app.kubernetes.io/name: hubble-ui
+    app.kubernetes.io/part-of: cilium
+spec:
+  tls:
+    - hosts:
+      - hubble.clux.dev
+      secretName: hubble-tls
+  rules:
+    - host: hubble.clux.dev
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: hubble-ui
+                port:
+                  name: http

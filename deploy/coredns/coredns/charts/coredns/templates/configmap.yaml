@@ -1,0 +1,43 @@
+---
+# Source: coredns/charts/coredns/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/instance: "coredns"
+    helm.sh/chart: "coredns-1.45.0"
+    k8s-app: coredns
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "CoreDNS"
+    app.kubernetes.io/name: coredns
+data:
+  Corefile: |-
+    .:53 {
+        errors
+        health {
+            lameduck 10s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+            pods insecure
+            fallthrough in-addr.arpa ip6.arpa
+            ttl 30
+        }
+        hosts /etc/coredns/NodeHosts {
+            ttl 60
+            reload 15s
+            fallthrough
+        }
+        prometheus 0.0.0.0:9153
+        forward . 192.168.1.1
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+    
+  NodeHosts:     |
+      192.168.1.40 homelab
