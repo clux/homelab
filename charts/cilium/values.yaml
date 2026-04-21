@@ -1,4 +1,6 @@
 # global
+# Warning;
+# Because this chart is applied manually, we don't always fully garbage collect.
 
 # Upstream values templated from this file:
 # https://github.com/cilium/cilium/blob/main/install/kubernetes/cilium/values.yaml.tmpl
@@ -24,8 +26,16 @@ cilium:
   operator:
     replicas: 1
     enabled: true
-  # dashboards:
-    # enabled: true
+    prometheus:
+      serviceMonitor:
+        enabled: false
+        # not super useful
+        # feature metrics; https://docs.cilium.io/en/stable/observability/metrics/#id8
+        # very rudimentary ipam stuff, a hive status bool, version..
+        interval: 30s
+    dashboards:
+      enabled: false
+      namespace: monitoring
   l2announcements:
     # https://isovalent.com/blog/post/migrating-from-metallb-to-cilium/#l2-announcement-with-arp
     enable: true
@@ -34,6 +44,16 @@ cilium:
     # enabled: true
     # gatewayClass:
       # create: 'true'
+  envoy:
+    prometheus:
+      serviceMonitor:
+        enabled: false
+        # not super useful atm
+        # envoy_listener prefixed metrics from https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/stats
+        # envoy_cluster prefixed metrics from https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/stats
+        # some more from https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/mgmt_server.html
+        # probably more. docs on envoy is large and sprawling..
+        interval: 30s
   hubble:
     enabled: true
     # peerService:
@@ -45,6 +65,7 @@ cilium:
         enabled: true
         interval: 30s
       # enableOpenMetrics: true
+      # documented in https://docs.cilium.io/en/stable/observability/metrics/
       enabled:
       - dns
       - drop
