@@ -113,6 +113,20 @@ entries:
     version: 0.1.1
   flux:
   - apiVersion: v2
+    created: "2026-11-10T14:22:35.579957589Z"
+    dependencies:
+    - condition: flux2.enabled
+      name: flux2
+      repository: https://fluxcd-community.github.io/helm-charts
+      version: '*'
+    description: wrapper over flux2
+    digest: 980dc2cf53b01ccb2bdd10b7ced19e822bed496e3010dc84de6adf763dda7c56
+    name: flux
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/flux-2.19.1/flux-2.19.1.tgz
+    version: 2.19.1
+  - apiVersion: v2
     created: "2025-03-11T18:15:34.440572595Z"
     dependencies:
     - condition: flux2.enabled
@@ -151,6 +165,23 @@ entries:
     - https://github.com/clux/homelab/releases/download/forgejo-0.1.0/forgejo-0.1.0.tgz
     version: 0.1.0
   promstack:
+  - apiVersion: v2
+    created: "2026-11-10T14:22:35.849866414Z"
+    dependencies:
+    - name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: '*'
+    - condition: tempo.enabled
+      name: tempo
+      repository: https://grafana.github.io/helm-charts
+      version: '*'
+    description: wrapper over kube-prometheus-stack and tooling
+    digest: 3a70661d6fb9cf6d67626fbb0198e804db53bda927667fe98d7e0f11937d57c4
+    name: promstack
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/promstack-92.11.0/promstack-92.11.0.tgz
+    version: 92.11.0
   - apiVersion: v2
     created: "2026-04-21T10:59:22.756025187Z"
     dependencies:
@@ -289,6 +320,19 @@ entries:
     version: 0.5.0
   renovate:
   - apiVersion: v2
+    created: "2026-11-10T14:22:36.005807104Z"
+    dependencies:
+    - name: renovate
+      repository: https://docs.renovatebot.com/helm-charts
+      version: '*'
+    description: wrapper over renovate
+    digest: 34998f2899f450246a896ffdf31a48f84b8571523591a8973ffdaffffb947aa9
+    name: renovate
+    type: application
+    urls:
+    - https://github.com/clux/homelab/releases/download/renovate-46.237.3/renovate-46.237.3.tgz
+    version: 46.237.3
+  - apiVersion: v2
     created: "2024-10-28T19:13:42.921745013Z"
     dependencies:
     - name: renovate
@@ -327,4 +371,4 @@ entries:
     urls:
     - https://github.com/clux/homelab/releases/download/renovate-0.1.0/renovate-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-21T10:59:22.756057436Z"
+generated: "2026-11-10T14:22:36.005882988Z"
