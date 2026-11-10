@@ -163,7 +163,7 @@ release-dashboard-chart:
   sd 'http://(\w+).clux.dev' '{{{{ .Values.urls.$1 }}' charts/cx-dashboards/templates/*.yaml
   for board in "${released[@]}"; do
     # Add do not modify and enabled headers/footer
-    sd -f=s '(.*)' '{{{{- if .Values.dashboards.THEACTUALBOARD.enabled }}\n# GENERATED DO NOT EDIT\n$1\n\n{{{{- end }}\n' charts/cx-dashboards/templates/cx${board}.yaml
+    sd -n=1 -f=s -A '(.*)' '{{{{- if .Values.dashboards.THEACTUALBOARD.enabled }}\n# GENERATED DO NOT EDIT\n$1\n\n{{{{- end }}\n' charts/cx-dashboards/templates/cx${board}.yaml
     sd 'THEACTUALBOARD' "$board" charts/cx-dashboards/templates/cx${board}.yaml
   done
   # ensure it can be generated

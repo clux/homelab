@@ -30,7 +30,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 10,
       "links": [
         {
           "asDropdown": false,
@@ -63,7 +62,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "custom": {
@@ -73,6 +71,9 @@ data:
                   "type": "color-background"
                 },
                 "filterable": false,
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -81,7 +82,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               }
@@ -143,7 +144,7 @@ data:
                 },
                 "properties": [
                   {
-                    "id": "custom.hidden",
+                    "id": "custom.hideFrom.viz",
                     "value": true
                   }
                 ]
@@ -160,17 +161,9 @@ data:
           "maxDataPoints": 5,
           "options": {
             "cellHeight": "md",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": false
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -181,7 +174,6 @@ data:
               "exemplar": false,
               "expr": "label_replace(avg(alertmanager_build_info) by (repository, container, version), \"repository\", \"prometheus/alertmanager\", \"container\", \"(.*)\")",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -196,7 +188,6 @@ data:
               "exemplar": false,
               "expr": "label_replace(avg(prometheus_operator_build_info) by (repository, container, version), \"repository\", \"prometheus-operator/prometheus-operator\", \"container\", \"(.*)\")",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -211,7 +202,6 @@ data:
               "exemplar": false,
               "expr": "label_replace(avg(grafana_build_info) by (repository, container, version), \"repository\", \"grafana/grafana\", \"container\", \"(.*)\")",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -258,7 +248,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -273,7 +262,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -380,7 +369,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -389,9 +378,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\",service=~\"$service\", state=\"active\"})",
+              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\", state=\"active\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "{{`{{`}} state {{`}}`}}",
               "range": false,
@@ -404,9 +392,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\",service=~\"$service\", state=\"suppressed\"})",
+              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\", state=\"suppressed\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "{{`{{`}} state {{`}}`}}",
               "range": false,
@@ -419,9 +406,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\",service=~\"$service\", state=\"unprocessed\"})",
+              "expr": "max(alertmanager_alerts{namespace=~\"$namespace\", state=\"unprocessed\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "{{`{{`}} state {{`}}`}}",
               "range": false,
@@ -437,7 +423,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -452,7 +437,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -559,7 +544,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -568,9 +553,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_silences{namespace=~\"$namespace\",service=~\"$service\", state=\"active\"})",
+              "expr": "max(alertmanager_silences{namespace=~\"$namespace\", state=\"active\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -583,9 +567,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_silences{namespace=~\"$namespace\",service=~\"$service\", state=\"pending\"})",
+              "expr": "max(alertmanager_silences{namespace=~\"$namespace\", state=\"pending\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -598,9 +581,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(alertmanager_silences{namespace=~\"$namespace\",service=~\"$service\", state=\"expired\"})",
+              "expr": "max(alertmanager_silences{namespace=~\"$namespace\", state=\"expired\"})",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -616,7 +598,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -637,7 +618,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -669,7 +650,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -679,7 +660,6 @@ data:
               "editorMode": "code",
               "expr": "avg(alertmanager_integrations{namespace=~\"$namespace\"})",
               "format": "time_series",
-              "hide": false,
               "legendFormat": "{{`{{`}} pod {{`}}`}} head series",
               "range": true,
               "refId": "A"
@@ -704,12 +684,13 @@ data:
               "fieldMinMax": false,
               "mappings": [],
               "min": 0,
+              "noValue": "0",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -769,7 +750,7 @@ data:
                       "steps": [
                         {
                           "color": "orange",
-                          "value": null
+                          "value": 0
                         }
                       ]
                     }
@@ -827,7 +808,7 @@ data:
                       "steps": [
                         {
                           "color": "orange",
-                          "value": null
+                          "value": 0
                         }
                       ]
                     }
@@ -885,7 +866,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -894,9 +875,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "avg(alertmanager_cluster_members{namespace=~\"$namespace\",service=~\"$service\"})",
+              "expr": "alertmanager_cluster_members{namespace=~\"$namespace\"}",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -909,9 +889,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "avg(alertmanager_cluster_failed_peers{namespace=~\"$namespace\",service=~\"$service\"})",
+              "expr": "alertmanager_cluster_failed_peers{namespace=~\"$namespace\"}",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -924,9 +903,8 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "avg(alertmanager_cluster_health_score{namespace=~\"$namespace\",service=~\"$service\"})",
+              "expr": "alertmanager_cluster_health_score{namespace=~\"$namespace\"}",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -942,7 +920,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -963,7 +940,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -995,7 +972,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1005,7 +982,6 @@ data:
               "editorMode": "code",
               "expr": "avg(alertmanager_inhibition_rules{namespace=~\"$namespace\"})",
               "format": "time_series",
-              "hide": false,
               "legendFormat": "{{`{{`}} pod {{`}}`}} head series",
               "range": true,
               "refId": "A"
@@ -1020,7 +996,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1035,7 +1010,7 @@ data:
                 "steps": [
                   {
                     "color": "blue",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -1139,7 +1114,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1150,7 +1125,6 @@ data:
               "exemplar": false,
               "expr": "sum(increase(alertmanager_alerts_received_total{status=\"firing\"}[$interval]))",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -1165,7 +1139,6 @@ data:
               "exemplar": false,
               "expr": "sum(increase(alertmanager_alerts_received_total{status=\"resolved\"}[$interval]))",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -1180,7 +1153,6 @@ data:
               "exemplar": false,
               "expr": "sum(increase(alertmanager_notifications_total[$interval]))",
               "format": "table",
-              "hide": false,
               "instant": true,
               "legendFormat": "__auto",
               "range": false,
@@ -1196,7 +1168,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1243,7 +1214,7 @@ data:
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -1279,7 +1250,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1287,7 +1258,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(alertmanager_config_last_reload_successful{namespace=~\"$namespace\",service=~\"$service\"})",
+              "expr": "sum(alertmanager_config_last_reload_successful{namespace=~\"$namespace\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "__auto",
@@ -1316,7 +1287,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1346,6 +1316,7 @@ data:
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1362,7 +1333,7 @@ data:
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   }
                 ]
               },
@@ -1402,8 +1373,8 @@ data:
             ]
           },
           "gridPos": {
-            "h": 7,
-            "w": 12,
+            "h": 9,
+            "w": 8,
             "x": 0,
             "y": 6
           },
@@ -1421,7 +1392,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1429,7 +1400,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration)",
+              "expr": "sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\", integration=~\"$integration\"}[$interval])) by (receiver_name)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{`{{`}} integration {{`}}`}}",
@@ -1442,7 +1413,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration) > 0",
+              "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",integration=~\"$integration\"}[$interval])) by (receiver_name) > 0",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Failed",
@@ -1458,7 +1429,106 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "red",
+                "mode": "shades"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "noValue": "No errors",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 8,
+            "x": 8,
+            "y": 6
+          },
+          "id": 54,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "code",
+              "expr": "sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",integration=~\"$integration\"}[$interval])) by (receiver_name, reason) > 0",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{`{{`}} receiver_name {{`}}`}} {{`{{`}} reason {{`}}`}}",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "$integration: Notifications Errors Rate per $interval",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1488,6 +1558,7 @@ data:
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1505,7 +1576,7 @@ data:
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -1564,9 +1635,9 @@ data:
             ]
           },
           "gridPos": {
-            "h": 7,
-            "w": 12,
-            "x": 12,
+            "h": 9,
+            "w": 8,
+            "x": 16,
             "y": 6
           },
           "id": 3,
@@ -1583,7 +1654,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1591,7 +1662,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_alerts_received_total{namespace=~\"$namespace\",service=~\"$service\"}[$interval])) by (status)",
+              "expr": "sum(increase(alertmanager_alerts_received_total{namespace=~\"$namespace\"}[$interval])) by (status)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{`{{`}} status {{`}}`}}",
@@ -1604,7 +1675,7 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum(increase(alertmanager_alerts_invalid_total{namespace=~\"$namespace\",service=~\"$service\"}[$interval]))",
+              "expr": "sum(increase(alertmanager_alerts_invalid_total{namespace=~\"$namespace\"}[$interval]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "invalid",
@@ -1621,7 +1692,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 13
+            "y": 15
           },
           "id": 52,
           "panels": [],
@@ -1633,7 +1704,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1663,6 +1733,7 @@ data:
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1681,7 +1752,7 @@ data:
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -1705,7 +1776,7 @@ data:
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 16
           },
           "id": 32,
           "options": {
@@ -1721,7 +1792,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1729,10 +1800,10 @@ data:
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "1 - (\n(sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration))\n/\n(sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (integration))\n)",
+              "expr": "1 - (\n(sum(increase(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (receiver_name))\n/\n(sum(increase(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=~\"$integration\"}[$interval])) by (receiver_name))\n)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "__auto",
+              "legendFormat": "{{`{{`}} integration {{`}}`}}",
               "range": true,
               "refId": "B"
             }
@@ -1745,7 +1816,6 @@ data:
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1775,6 +1845,7 @@ data:
                   "type": "linear"
                 },
                 "showPoints": "never",
+                "showValues": false,
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1793,7 +1864,7 @@ data:
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -1817,7 +1888,7 @@ data:
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 14
+            "y": 16
           },
           "id": 51,
           "options": {
@@ -1833,7 +1904,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.4.13",
           "targets": [
             {
               "datasource": {
@@ -1853,325 +1924,330 @@ data:
           "type": "timeseries"
         },
         {
-          "collapsed": true,
+          "collapsed": false,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 21
+            "y": 23
           },
           "id": 48,
-          "panels": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+          "panels": [],
+          "title": "Alert Breakdown",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
               },
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "custom": {
-                    "align": "auto",
-                    "cellOptions": {
-                      "type": "auto"
-                    },
-                    "filterable": false,
-                    "inspect": false
-                  },
-                  "links": [
-                    {
-                      "targetBlank": true,
-                      "title": "Show Alert History",
-                      "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertname%3D%22${__data.fields.alertname}%22%2C%20alertstate%3D%22firing%22%7D&g0.tab=0&g0.display_mode=lines&g0.show_exemplars=0&g0.range_input=2w"
-                    }
-                  ],
-                  "mappings": [],
-                  "noValue": "No alerts firing",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green"
-                      }
-                    ]
-                  }
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
                 },
-                "overrides": []
-              },
-              "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 23
-              },
-              "id": 35,
-              "options": {
-                "cellHeight": "sm",
+                "filterable": false,
                 "footer": {
-                  "countRows": false,
-                  "fields": "",
-                  "reducer": [
-                    "sum"
-                  ],
-                  "show": false
+                  "reducers": []
                 },
-                "showHeader": false
+                "inspect": false
               },
-              "pluginVersion": "10.4.1",
-              "targets": [
+              "links": [
                 {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "Prometheus"
-                  },
-                  "editorMode": "code",
-                  "exemplar": false,
-                  "expr": "count(ALERTS{alertstate=\"firing\"}) by (alertname)",
-                  "format": "table",
-                  "instant": true,
-                  "legendFormat": "__auto",
-                  "range": false,
-                  "refId": "A"
+                  "targetBlank": true,
+                  "title": "Show Alert History",
+                  "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertname%3D%22${__data.fields.alertname}%22%2C%20alertstate%3D%22firing%22%7D&g0.tab=0&g0.display_mode=lines&g0.show_exemplars=0&g0.range_input=2w"
                 }
               ],
-              "title": "Active Alerts In Time Frame",
-              "transformations": [
-                {
-                  "id": "filterFieldsByName",
-                  "options": {
-                    "include": {
-                      "names": [
-                        "alertname"
-                      ]
-                    }
+              "mappings": [],
+              "noValue": "No alerts firing",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
                   }
-                }
-              ],
-              "type": "table"
+                ]
+              }
             },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 24
+          },
+          "id": 35,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": false
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 1,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  },
-                  "mappings": [],
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green"
-                      }
-                    ]
-                  }
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "count(ALERTS{alertstate=\"firing\"}) by (alertname)",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Active Alerts In Time Frame",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "alertname"
+                  ]
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
                 },
-                "overrides": [
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
                   {
-                    "matcher": {
-                      "id": "byType",
-                      "options": "number"
-                    },
-                    "properties": [
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byType",
+                  "options": "number"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
                       {
-                        "id": "links",
-                        "value": [
-                          {
-                            "targetBlank": true,
-                            "title": "Show Alert Trend",
-                            "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertname%3D%22${__field.labels.alertname}%22%2C%20alertstate%3D%22firing%22%7D&g0.tab=1&g0.display_mode=lines&g0.show_exemplars=0&g0.range_input=2w"
-                          }
-                        ]
+                        "targetBlank": true,
+                        "title": "Show Alert Trend",
+                        "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertname%3D%22${__field.labels.alertname}%22%2C%20alertstate%3D%22firing%22%7D&g0.tab=1&g0.display_mode=lines&g0.show_exemplars=0&g0.range_input=2w"
                       }
                     ]
                   }
                 ]
-              },
-              "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 23
-              },
-              "id": 49,
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "tooltip": {
-                  "maxHeight": 500,
-                  "mode": "multi",
-                  "sort": "desc"
-                }
-              },
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "Prometheus"
-                  },
-                  "editorMode": "code",
-                  "expr": "sum(ALERTS{alertstate=\"firing\"}) by (alertname) > 1",
-                  "instant": false,
-                  "legendFormat": "{{`{{`}} alertname {{`}}`}}",
-                  "range": true,
-                  "refId": "A"
-                }
-              ],
-              "title": "Simultaneously Firing",
-              "type": "timeseries"
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 24
+          },
+          "id": 49,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
             },
+            "tooltip": {
+              "hideZeros": false,
+              "maxHeight": 500,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "fixedColor": "blue",
-                    "mode": "shades"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "axisSoftMin": 0,
-                    "barAlignment": 0,
-                    "drawStyle": "line",
-                    "fillOpacity": 3,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  },
-                  "mappings": [],
-                  "noValue": "No ALERTS in firing state.",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green"
-                      }
-                    ]
-                  },
-                  "unit": "none"
-                },
-                "overrides": []
-              },
-              "gridPos": {
-                "h": 7,
-                "w": 24,
-                "x": 0,
-                "y": 30
-              },
-              "id": 50,
-              "interval": "5m",
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "Show all firing",
-                  "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertstate%3D%22firing%22%7D"
-                }
-              ],
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "tooltip": {
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "targets": [
-                {
-                  "datasource": {
-                    "type": "prometheus",
-                    "uid": "Prometheus"
-                  },
-                  "editorMode": "code",
-                  "expr": "count(ALERTS{alertstate=\"firing\"})",
-                  "instant": false,
-                  "legendFormat": "Firing Alerts",
-                  "range": true,
-                  "refId": "A"
-                }
-              ],
-              "timeFrom": "30d",
-              "title": "Alerts Firing 30d Trend",
-              "type": "timeseries"
+              "editorMode": "code",
+              "expr": "sum(ALERTS{alertstate=\"firing\"}) by (alertname) > 1",
+              "instant": false,
+              "legendFormat": "{{`{{`}} alertname {{`}}`}}",
+              "range": true,
+              "refId": "A"
             }
           ],
-          "title": "Alert Breakdown",
-          "type": "row"
+          "title": "Simultaneously Firing",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "blue",
+                "mode": "shades"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 3,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "noValue": "No ALERTS in firing state.",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 31
+          },
+          "id": 50,
+          "interval": "5m",
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Show all firing",
+              "url": "{{ .Values.urls.prometheus }}/graph?g0.expr=ALERTS%7Balertstate%3D%22firing%22%7D"
+            }
+          ],
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "Prometheus"
+              },
+              "editorMode": "code",
+              "expr": "count(ALERTS{alertstate=\"firing\"})",
+              "instant": false,
+              "legendFormat": "Firing Alerts",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "timeFrom": "30d",
+          "title": "Alerts Firing 30d Trend",
+          "type": "timeseries"
         }
       ],
       "preload": false,
       "refresh": "",
-      "schemaVersion": 40,
+      "schemaVersion": 42,
       "tags": [
         "cx",
         "prometheus"
@@ -2196,6 +2272,7 @@ data:
             "query": "label_values(alertmanager_alerts, namespace)",
             "refresh": 2,
             "regex": "",
+            "regexApplyTo": "value",
             "sort": 1,
             "type": "query"
           },
@@ -2217,6 +2294,7 @@ data:
             "query": "label_values(alertmanager_alerts, service)",
             "refresh": 2,
             "regex": "",
+            "regexApplyTo": "value",
             "sort": 1,
             "type": "query"
           },
@@ -2236,6 +2314,7 @@ data:
             "query": "label_values(alertmanager_notifications_total{integration=~\".*\"}, integration)",
             "refresh": 2,
             "regex": "",
+            "regexApplyTo": "value",
             "sort": 1,
             "type": "query"
           },
