@@ -68,11 +68,14 @@ kube-prometheus-stack:
         regex: '^.*bucket.*'
 
 
-  ## https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+  ## https://github.com/grafana-community/helm-charts/blob/main/charts/grafana/values.yaml
   grafana:
     enabled: true
     defaultDashboardsEnabled: true
     adminPassword: prom-operator
+    image:
+      # pin to latest 12 until we have a good solution to their dashboard stuff
+      tag: "12.4.13"
     serviceMonitor:
       enabled: true
       metricRelabelings:
@@ -99,7 +102,16 @@ kube-prometheus-stack:
       auth:
         disable_login_form: true
       analytics:
+        enabled: false
         check_for_updates: false
+        reporting_enabled: false
+      plugins:
+        preinstall_auto_update: "false"
+      feature_toggles:
+        kubernetesDashboards: false
+        dashboardNewLayouts: false
+      news:
+        news_feed_enabled: false
       unified_alerting:
         enabled: false
       alerting:

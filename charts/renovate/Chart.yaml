@@ -2,8 +2,8 @@ apiVersion: v2
 name: renovate
 description: wrapper over renovate
 type: application
-version: 46.3.1
+version: 46.237.3
 dependencies:
 - name: renovate
-  version: '*'
+  version: "*"
   repository: https://docs.renovatebot.com/helm-charts

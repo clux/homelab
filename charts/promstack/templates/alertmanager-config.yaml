@@ -23,7 +23,7 @@ spec:
     - receiver: "default"
   receivers:
   - name: "null"
-  - name: "default"
+  - name: "discord-clux"
     discordConfigs:
     - apiURL:
         name: discord
