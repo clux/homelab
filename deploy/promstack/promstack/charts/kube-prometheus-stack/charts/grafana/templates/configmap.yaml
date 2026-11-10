@@ -6,10 +6,10 @@ metadata:
   name: promstack-grafana
   namespace: monitoring
   labels:
-    helm.sh/chart: grafana-10.5.15
+    helm.sh/chart: grafana-14.0.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "12.3.1"
+    app.kubernetes.io/version: "12.4.13"
 data:
   
   grafana.ini: |
@@ -17,6 +17,8 @@ data:
     enabled = false
     [analytics]
     check_for_updates = false
+    enabled = false
+    reporting_enabled = false
     [auth]
     disable_login_form = true
     [auth.anonymous]
@@ -26,13 +28,20 @@ data:
     enabled = false
     [dashboards]
     default_home_dashboard_path = /tmp/dashboards/cxhome.json
+    [feature_toggles]
+    dashboardNewLayouts = false
+    kubernetesDashboards = false
     [log]
     mode = console
+    [news]
+    news_feed_enabled = false
     [paths]
     data = /var/lib/grafana/
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
+    [plugins]
+    preinstall_auto_update = false
     [server]
     domain = grafana.clux.dev
     [unified_alerting]

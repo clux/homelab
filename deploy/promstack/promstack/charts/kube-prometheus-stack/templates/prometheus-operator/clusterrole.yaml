@@ -8,9 +8,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "81.5.0"
+    app.kubernetes.io/version: "92.11.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-81.5.0
+    chart: kube-prometheus-stack-92.11.0
     release: "promstack"
     heritage: "Helm"
     app: promstack-operator
@@ -21,43 +21,78 @@ rules:
   - monitoring.coreos.com
   resources:
   - alertmanagers
-  - alertmanagers/finalizers
-  - alertmanagers/status
-  - alertmanagerconfigs
-  - prometheuses
-  - prometheuses/finalizers
-  - prometheuses/status
   - prometheusagents
-  - prometheusagents/finalizers
-  - prometheusagents/status
+  - prometheuses
   - thanosrulers
-  - thanosrulers/finalizers
-  - thanosrulers/status
-  - scrapeconfigs
-  - scrapeconfigs/status
-  - servicemonitors
-  - servicemonitors/status
-  - podmonitors
-  - podmonitors/status
-  - probes
-  - probes/status
-  - prometheusrules
-  - prometheusrules/status
   verbs:
-  - '*'
+  - patch
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - alertmanagers/status
+  - podmonitors/status
+  - probes/status
+  - prometheuses/status
+  - prometheusagents/status
+  - prometheusrules/status
+  - scrapeconfigs/status
+  - servicemonitors/status
+  - thanosrulers/status
+  verbs:
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - alertmanagers/finalizers
+  - prometheusagents/finalizers
+  - prometheuses/finalizers
+  - thanosrulers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - alertmanagers
+  - alertmanagerconfigs
+  - podmonitors
+  - probes
+  - prometheusagents
+  - prometheuses
+  - prometheusrules
+  - servicemonitors
+  - scrapeconfigs
+  - thanosrulers
+  verbs:
+  - get
+  - list
+  - watch
 - apiGroups:
   - apps
   resources:
   - statefulsets
   verbs:
-  - '*'
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
 - apiGroups:
   - ""
   resources:
   - configmaps
   - secrets
   verbs:
-  - '*'
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - delete
 - apiGroups:
   - ""
   resources:

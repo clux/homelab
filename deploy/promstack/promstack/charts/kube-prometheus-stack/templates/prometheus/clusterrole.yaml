@@ -9,9 +9,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "81.5.0"
+    app.kubernetes.io/version: "92.11.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-81.5.0
+    chart: kube-prometheus-stack-92.11.0
     release: "promstack"
     heritage: "Helm"
 rules:
@@ -35,5 +35,7 @@ rules:
   resources:
   - ingresses
   verbs: ["get", "list", "watch"]
-- nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
+- nonResourceURLs:
+  - "/metrics"
+  - "/metrics/cadvisor"
   verbs: ["get"]

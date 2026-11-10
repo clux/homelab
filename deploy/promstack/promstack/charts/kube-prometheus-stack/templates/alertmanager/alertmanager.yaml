@@ -10,20 +10,22 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "81.5.0"
+    app.kubernetes.io/version: "92.11.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-81.5.0
+    chart: kube-prometheus-stack-92.11.0
     release: "promstack"
     heritage: "Helm"
 spec:
-  image: "quay.io/prometheus/alertmanager:v0.31.0"
+  image: "quay.io/prometheus/alertmanager:v0.34.1"
   imagePullPolicy: "IfNotPresent"
-  version: v0.31.0
+  version: "v0.34.1"
   replicas: 1
   listenLocal: false
   serviceAccountName: promstack-alertmanager
   automountServiceAccountToken: true
   externalUrl: "http://alertmanager.clux.dev"
+  nodeSelector:
+    kubernetes.io/os: linux
   paused: false
   logFormat: "logfmt"
   logLevel:  "info"

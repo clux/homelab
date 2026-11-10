@@ -10,9 +10,9 @@ metadata:
     
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "81.5.0"
+    app.kubernetes.io/version: "92.11.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-81.5.0
+    chart: kube-prometheus-stack-92.11.0
     release: "promstack"
     heritage: "Helm"
 spec:
@@ -37,10 +37,18 @@ spec:
         sum by (namespace, pod, job, cluster) (
           max by (namespace, pod, job, cluster) (
             kube_pod_status_phase{job="kube-state-metrics", namespace=~".*", phase=~"Pending|Unknown"}
-          ) * on (namespace, pod, cluster) group_left(owner_kind) topk by (namespace, pod, cluster) (
+            or
+            (
+              kube_pod_status_phase{job="kube-state-metrics", namespace=~".*", phase="Running"} == 1
+              and on (namespace, pod, cluster)
+              kube_pod_status_ready{job="kube-state-metrics", namespace=~".*", condition="true"} == 0
+            )
+          ) * on (namespace, pod, cluster) group_left() topk by (namespace, pod, cluster) (
             1, max by (namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
           )
         ) > 0
+        unless on (namespace, pod, cluster)
+        kube_pod_status_reason{job="kube-state-metrics", namespace=~".*", reason="SchedulingGated"} == 1
       for: 15m
       labels:
         severity: warning
@@ -212,6 +220,8 @@ spec:
         time() - max by (namespace, job_name, cluster) (kube_job_status_start_time{job="kube-state-metrics", namespace=~".*"}
           and
         kube_job_status_active{job="kube-state-metrics", namespace=~".*"} > 0) > 43200
+          unless on (namespace, job_name, cluster)
+        max by (namespace, job_name, cluster) (kube_job_labels{job="kube-state-metrics", namespace=~".*",label_excluded_from_alerts="true"} == 1)
       labels:
         severity: warning
     - alert: KubeJobFailed
@@ -251,9 +261,16 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpamaxedout
         summary: HPA is running at max replicas
       expr: |-
-        kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics", namespace=~".*"}
-          ==
-        kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics", namespace=~".*"}
+        (
+          kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics", namespace=~".*"}
+            ==
+          kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics", namespace=~".*"}
+        )
+        and on (namespace, horizontalpodautoscaler, cluster) (
+          kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics", namespace=~".*"}
+            !=
+          kube_horizontalpodautoscaler_spec_min_replicas{job="kube-state-metrics", namespace=~".*"}
+        )
       for: 15m
       labels:
         severity: warning
@@ -268,6 +285,9 @@ spec:
           -
           kube_poddisruptionbudget_status_current_healthy{job="kube-state-metrics", namespace=~".*"}
         )
+        > 0
+        and
+        kube_poddisruptionbudget_status_expected_pods{job="kube-state-metrics", namespace=~".*"}
         > 0
       for: 15m
       labels:

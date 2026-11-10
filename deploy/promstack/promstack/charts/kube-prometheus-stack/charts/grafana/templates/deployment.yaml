@@ -6,10 +6,10 @@ metadata:
   name: promstack-grafana
   namespace: monitoring
   labels:
-    helm.sh/chart: grafana-10.5.15
+    helm.sh/chart: grafana-14.0.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "12.3.1"
+    app.kubernetes.io/version: "12.4.13"
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -22,12 +22,12 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: grafana-10.5.15
+        helm.sh/chart: grafana-14.0.1
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: promstack
-        app.kubernetes.io/version: "12.3.1"
+        app.kubernetes.io/version: "12.4.13"
       annotations:
-        checksum/config: 99dd548175c6cfafc2b6f9f75ae72aaba33316f3d0ba187628464170a1f179c9
+        checksum/config: 3884083421bf91c8a99f83485acbb0479021232ede416e4dd61c28c227c6326a
         checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
         checksum/secret: 032056e9c62bbe9d1daa41ee49cd3d9524c076f51ca4c65adadf4ef08ef28712
         kubectl.kubernetes.io/default-container: grafana
@@ -44,7 +44,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: grafana-sc-dashboard
-          image: "quay.io/kiwigrid/k8s-sidecar:2.5.0"
+          image: "quay.io/kiwigrid/k8s-sidecar:2.14.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: METHOD
@@ -78,13 +78,14 @@ spec:
             capabilities:
               drop:
               - ALL
+            readOnlyRootFilesystem: true
             seccompProfile:
               type: RuntimeDefault
           volumeMounts:
             - name: sc-dashboard-volume
               mountPath: "/tmp/dashboards"
         - name: grafana
-          image: "docker.io/grafana/grafana:12.3.1"
+          image: "docker.io/grafana/grafana:12.4.13"
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -92,9 +93,12 @@ spec:
               drop:
               - ALL
             privileged: false
+            readOnlyRootFilesystem: true
             seccompProfile:
               type: RuntimeDefault
           volumeMounts:
+            - name: tmp
+              mountPath: "/tmp"
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
               subPath: grafana.ini
@@ -160,6 +164,8 @@ spec:
               path: /api/health
               port: grafana
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: config
           configMap:
             name: promstack-grafana

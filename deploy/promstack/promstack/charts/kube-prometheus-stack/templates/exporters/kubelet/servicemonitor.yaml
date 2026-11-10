@@ -9,9 +9,9 @@ metadata:
     app: promstack-kubelet    
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: promstack
-    app.kubernetes.io/version: "81.5.0"
+    app.kubernetes.io/version: "92.11.0"
     app.kubernetes.io/part-of: promstack
-    chart: kube-prometheus-stack-81.5.0
+    chart: kube-prometheus-stack-92.11.0
     release: "promstack"
     heritage: "Helm"
 spec:
@@ -31,9 +31,16 @@ spec:
     scheme: https
     interval: 60s    
     tlsConfig:
-      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      ca:
+        configMap:
+          key: ca.crt
+          name: kube-root-ca.crt
       insecureSkipVerify: true
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    authorization:
+      credentials:
+        key: token
+        name: 'promstack-prometheus-token'
+      type: Bearer
     honorLabels: true
     honorTimestamps: true
     metricRelabelings:
@@ -74,9 +81,16 @@ spec:
     honorTimestamps: true
     trackTimestampsStaleness: true    
     tlsConfig:
-      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      ca:
+        configMap:
+          key: ca.crt
+          name: kube-root-ca.crt
       insecureSkipVerify: true
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    authorization:
+      credentials:
+        key: token
+        name: 'promstack-prometheus-token'
+      type: Bearer
     metricRelabelings:
     - action: drop
       regex: scheduler_.*
